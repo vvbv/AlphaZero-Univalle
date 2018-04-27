@@ -2,9 +2,14 @@
 #include "board.hpp"
 
 int main(int argc, const char* argv[]){
+    int items_quantity = 0;
     std::cout << "Alpha-Zero Univalle" << std::endl;
+    std::cout << "Cantidad de items: ";
+    std::cin >> items_quantity;
     Board board;
-    std::cout << board.generate_board( 5 ) << std::endl;
-    std::cout << board.generate_board( 4 ) << std::endl;
+    if( board.generate_board( items_quantity ) == 0 ){
+        std::cout << "Tablero generado correctamente" << std::endl;
+    }
+    
     return 0;
 }
