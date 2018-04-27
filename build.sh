@@ -1,1 +1,1 @@
-g++ --std=c++11 src/main.cpp -I include/ -o build/alpha-zero
+g++ --std=c++11 src/*.cpp -I include/ -o build/alpha-zero

@@ -1,7 +1,8 @@
 #ifndef BOARD_HPP_
 #define BOARD_HPP_
 
-#import <tuple>
+#include <tuple>
+#include <vector>
 
 class Board{
 
@@ -11,11 +12,11 @@ class Board{
     public:
         Board();
         ~Board();
-        std::tubple < int, int > get_pos_horse_pc();
-        std::tubple < int, int > get_pos_horse_human();
+        std::tuple < int, int > get_pos_horse_pc();
+        std::tuple < int, int > get_pos_horse_human();
         std::vector < std::tuple < int, int > > get_pos_fruits();
-        void generate_board( );
-        void generate_board( int fruit_quantity );
+        int generate_board( );
+        int generate_board( int fruit_quantity );
 
 };
 
