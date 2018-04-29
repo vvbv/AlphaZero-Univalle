@@ -1,6 +1,12 @@
 #include "board.hpp"
 
-Board::Board(){};
+Board::Board(){
+    for( int i = 0; i < this->BOARD_SIDE_SIZE; i++ ){
+        for( int j = 0; j < this->BOARD_SIDE_SIZE; j++ ){
+            this->boxes[ i ][ j ] = this->FREE_ID;
+        };
+    };
+};
 Board::~Board(){};
 std::tuple < int, int > Board::get_pos_horse_pc(){};
 std::tuple < int, int > Board::get_pos_horse_human(){};
@@ -12,9 +18,12 @@ int Board::generate_board( int fruit_quantity ){
     }else{
         //std::cout << "Cantidad de items a recolectar: " << fruit_quantity << std::endl;
         std::vector < std::tuple < int, int > > pos_items = get_list_pos_random( ( fruit_quantity + this->HORSES_QUANTITY ) );
-        /*for( int i = 0; i < pos_items.size(); i++ ){
-            std::cout << " [ " << std::get< 0 >( pos_items[ i ] ) << " - " << std::get< 1 >( pos_items[ i ] ) << " ]" << std::endl;
-        }*/
+        for( int i = 0; i < ( pos_items.size() - 2 ); i++ ){
+            //std::cout << " [ " << std::get< 0 >( pos_items[ i ] ) << " - " << std::get< 1 >( pos_items[ i ] ) << " ]" << std::endl;
+            this->boxes[ std::get< 0 >( pos_items[ i ] ) ][ std::get< 1 >( pos_items[ i ] ) ] = this->ITEM_ID;
+        }
+        this->boxes[ std::get< 0 >( pos_items[ pos_items.size() - 2 ] ) ][ std::get< 1 >( pos_items[ pos_items.size() - 2 ] ) ] = this->HORSE_HUMAN_ID;
+        this->boxes[ std::get< 0 >( pos_items[ pos_items.size() - 1 ] ) ][ std::get< 1 >( pos_items[ pos_items.size() - 1 ] ) ] = this->HORSE_PC_ID;
         return 0;
     }
 };
@@ -30,3 +39,12 @@ std::vector < std::tuple < int, int > > Board::get_list_pos_random( int number_e
     }
     return pos_items;
 };  
+
+void Board::print_board(){
+    for( int i = 0; i < this->BOARD_SIDE_SIZE; i++ ){
+        for( int j = 0; j < this->BOARD_SIDE_SIZE; j++ ){
+            std::cout << this->boxes[ i ][ j ] << " ";
+        };
+        std::cout << std::endl;
+    };
+};
