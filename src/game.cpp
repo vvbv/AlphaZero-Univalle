@@ -29,6 +29,60 @@ int Game::minmax( Board board, bool pc_turn ){
         };
     };
 
+    int current_position[2];
+
+    if( pc_turn ){
+        current_position[0] = pos_pc[0];
+        current_position[1] = pos_pc[1];
+    }else{
+        current_position[0] = pos_human[0];
+        current_position[1] = pos_human[1];
+    };
+
+    struct minmax_game_elements {
+        int pos_row;
+        int pos_column;
+        bool same_pos_with_othe_player;
+        int human_items_quantity;
+        int pc_items_quantity;
+        int depth;
+    };
+
+    struct index_in_non_dynamic_expansions{
+        int index;
+    };
+
+    std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > last_node;
+    std::vector < std::tuple < minmax_game_elements > > no_dynamic_expansions;
+    std::vector < std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > > expansions;
+
+    minmax_game_elements first_expansion_elements;
+    first_expansion_elements.pos_row = current_position[0];
+    first_expansion_elements.pos_column = current_position[1];
+    first_expansion_elements.same_pos_with_othe_player = false;
+    first_expansion_elements.human_items_quantity = 0;
+    first_expansion_elements.pc_items_quantity = 0;
+    first_expansion_elements.depth = 0;
+
+    index_in_non_dynamic_expansions first_index_in_non_dynamic_expansions;
+    first_index_in_non_dynamic_expansions.index = 0;
+
+    std::tuple < minmax_game_elements > first_non_dynamic_expansion = std::make_tuple( first_expansion_elements  );
+    no_dynamic_expansions.push_back( first_non_dynamic_expansion );
+
+    std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > first_expansion = std::make_tuple( first_expansion_elements, first_index_in_non_dynamic_expansions );
+    expansions.push_back( first_expansion );
+
+    last_node = first_expansion;
+    int index_controller = 0;
+
+    bool is_max = true;
+    while( ( board.get_items_quantity() - std::get< 0 >( last_node ).human_items_quantity + std::get< 0 >( last_node ).pc_items_quantity ) > 0 ){
+
+
+
+    }
+
     /*
         int pos_actual[2];
         pos_actual[0] = entorno.get_posicion_inicial()[0]; 

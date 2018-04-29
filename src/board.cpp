@@ -12,12 +12,13 @@ std::tuple < int, int > Board::get_pos_horse_pc(){};
 std::tuple < int, int > Board::get_pos_horse_human(){};
 std::vector < std::tuple < int, int > > Board::get_pos_fruits(){};
 
-int Board::generate_board( int fruit_quantity ){
-    if( fruit_quantity % 2 == 0 ){
+int Board::generate_board( int items_quantity ){
+    if( items_quantity % 2 == 0 ){
         return -1;
     }else{
-        //std::cout << "Cantidad de items a recolectar: " << fruit_quantity << std::endl;
-        std::vector < std::tuple < int, int > > pos_items = get_list_pos_random( ( fruit_quantity + this->HORSES_QUANTITY ) );
+        this->items_quantity = items_quantity;
+        //std::cout << "Cantidad de items a recolectar: " << items_quantity << std::endl;
+        std::vector < std::tuple < int, int > > pos_items = get_list_pos_random( ( items_quantity + this->HORSES_QUANTITY ) );
         for( int i = 0; i < ( pos_items.size() - 2 ); i++ ){
             //std::cout << " [ " << std::get< 0 >( pos_items[ i ] ) << " - " << std::get< 1 >( pos_items[ i ] ) << " ]" << std::endl;
             this->boxes[ std::get< 0 >( pos_items[ i ] ) ][ std::get< 1 >( pos_items[ i ] ) ] = this->ITEM_ID;
@@ -71,4 +72,8 @@ int Board::get_horse_pc_id(){
 
 int Board::get_free_id(){ 
     return this->FREE_ID; 
+};
+
+int Board::get_items_quantity(){
+    return this->items_quantity;
 };
