@@ -14,14 +14,15 @@ int Game::minmax( Board board, bool pc_turn ){
 
     int pos_pc[2];
     int pos_human[2];
-    
-    for( int i = 0; i < board->get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j < board->get_BOARD_SIDE_SIZE(); j++ ){
-            if( board->get_box_value() == board->get_horse_human_id() ){
-                pos_pc[0] = i;
-                pos_pc[1] = j;
+
+    for( int i = 0; i < board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < board.get_BOARD_SIDE_SIZE(); j++ ){
+            int tmp_pos[2] = { i, j }; 
+            if( board.get_box_value( tmp_pos ) == board.get_horse_human_id() ){
+                pos_human[0] = i;
+                pos_human[1] = j;
             };
-            if( board->get_box_value() == board->get_horse_pc_id() ){
+            if( board.get_box_value( tmp_pos ) == board.get_horse_pc_id() ){
                 pos_pc[0] = i;
                 pos_pc[1] = j;
             };
@@ -412,7 +413,7 @@ void Game::start_new_game(){
     
     bool pc_turn = true; // In each game, pc starts first.
     while( ( this->items_collected_by_human + this->items_collected_by_pc - this->items_to_collect ) != 0 ){
-        int minmax_action = minmax( Board board, pc_turn );
+        int minmax_action = minmax( this->board, pc_turn );
         pc_turn = !pc_turn;
     };
     

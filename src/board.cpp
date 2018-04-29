@@ -62,7 +62,7 @@ int Board::get_item_id(){
 };
 
 int Board::get_horse_human_id(){ 
-    return this->HORSE_HUMAN_ID 
+    return this->HORSE_HUMAN_ID ;
 };
 
 int Board::get_horse_pc_id(){ 
