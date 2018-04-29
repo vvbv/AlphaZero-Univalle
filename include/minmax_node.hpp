@@ -17,7 +17,7 @@ class Minmax_node{
 
     public:
         Minmax_node();
-        Minmax_node( bool is_max, bool is_root, bool is_sheet, int utility, Minmax_node *ancestor );
+        Minmax_node( bool is_max, bool is_root, bool is_sheet, int utility, Minmax_node &ancestor );
         ~Minmax_node();
         void regressive_update();
         void set_utility( int utility );

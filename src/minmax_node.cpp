@@ -1,13 +1,6 @@
 #include "minmax_node.hpp"
 
 Minmax_node::Minmax_node(){};
-Minmax_node::Minmax_node( bool is_max, bool is_root, bool is_sheet, int utility, Minmax_node *ancestor ){
-    this->is_max = is_max;
-    this->is_root = is_root;
-    this->is_sheet = is_sheet;
-    this->utility = utility;
-    this->ancestor = ancestor;
-};
 Minmax_node::~Minmax_node(){};
 void Minmax_node::regressive_update(){
     

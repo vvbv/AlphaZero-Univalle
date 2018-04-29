@@ -30,15 +30,23 @@ int Board::generate_board( int fruit_quantity ){
 std::vector < std::tuple < int, int > > Board::get_list_pos_random( int number_elements ){
     std::vector < std::tuple < int, int > > pos_items;
     while( pos_items.size() != number_elements ){
-        int pos_x = this->math.generate_random_number( 0, ( this->BOARD_SIDE_SIZE - 1 ) );
-        int pos_y = this->math.generate_random_number( 0, ( this->BOARD_SIDE_SIZE - 1 ) );
-        std::tuple < int, int > tmp_pos = std::make_tuple( pos_x, pos_y );
+        int pos_row = this->math.generate_random_number( 0, ( this->BOARD_SIDE_SIZE - 1 ) );
+        int pos_column = this->math.generate_random_number( 0, ( this->BOARD_SIDE_SIZE - 1 ) );
+        std::tuple < int, int > tmp_pos = std::make_tuple( pos_row, pos_column );
         if ( std::find( pos_items.begin(), pos_items.end(), tmp_pos ) == pos_items.end() ){
             pos_items.push_back( tmp_pos );
         }
     }
     return pos_items;
 };  
+
+int Board::get_box_value( int pos[2] ){
+    return this->boxes[pos[0]][pos[1]];
+};
+
+int Board::get_BOARD_SIDE_SIZE(){
+    return this->BOARD_SIDE_SIZE;
+};
 
 void Board::print_board(){
     for( int i = 0; i < this->BOARD_SIDE_SIZE; i++ ){

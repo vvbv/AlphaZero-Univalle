@@ -14,12 +14,12 @@ class Board{
     private:
         Math math;
         int boxes[6][6];
-        const int BOARD_SIDE_SIZE = 6;
-        const int HORSES_QUANTITY = 2;
-        const int ITEM_ID = 3;
-        const int HORSE_HUMAN_ID = 1;
-        const int HORSE_PC_ID = 2;
-        const int FREE_ID = 0;
+        int BOARD_SIDE_SIZE = 6;
+        int HORSES_QUANTITY = 2;
+        int ITEM_ID = 3;
+        int HORSE_HUMAN_ID = 1;
+        int HORSE_PC_ID = 2;
+        int FREE_ID = 0;
         std::vector < std::tuple < int, int > > get_list_pos_random( int number_elements );
 
     public:
@@ -29,8 +29,10 @@ class Board{
         std::tuple < int, int > get_pos_horse_human();
         std::vector < std::tuple < int, int > > get_pos_fruits();
         int generate_board( int fruit_quantity );
+        int get_box_value( int pos[2] );
+        int get_BOARD_SIDE_SIZE();
         void print_board();
-
+        
 };
 
 #endif
