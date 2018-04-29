@@ -4,14 +4,31 @@ Game::Game(){};
 Game::~Game(){};
 void Game::set_board( Board board ){
     this->board = board;
+    this->items_collected_by_human = 0;
+    this->items_collected_by_pc = 0;
 };
 Board Game::get_board(){
     return this->board;
 };
-int Game::minmax( bool is_max, Board board, bool human_turn ){
+int Game::minmax( Board board, bool pc_turn ){
+
+    int pos_pc[2];
+    int pos_human[2];
+    
+    for( int i = 0; i < board->get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < board->get_BOARD_SIDE_SIZE(); j++ ){
+            if( board->get_box_value() == board->get_horse_human_id() ){
+                pos_pc[0] = i;
+                pos_pc[1] = j;
+            };
+            if( board->get_box_value() == board->get_horse_pc_id() ){
+                pos_pc[0] = i;
+                pos_pc[1] = j;
+            };
+        };
+    };
+
     /*
-        std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente, bool debug_mode ){
-      
         int pos_actual[2];
         pos_actual[0] = entorno.get_posicion_inicial()[0]; 
         pos_actual[1] = entorno.get_posicion_inicial()[1]; 
@@ -380,4 +397,23 @@ std::tuple < int, int, int > Game::get_pos_right_up( int pos[] ){
     }else{
         return std::make_tuple( pos[0], pos[1], -1 );
     };
+};
+
+void Game::set_items_to_collect( int items_quantity ){
+    this->items_to_collect = items_quantity;
+};
+
+void Game::start_new_game( Board board ){
+    this->board = board;
+    this->start_new_game();
+};
+
+void Game::start_new_game(){
+    
+    bool pc_turn = true; // In each game, pc starts first.
+    while( ( this->items_collected_by_human + this->items_collected_by_pc - this->items_to_collect ) != 0 ){
+        int minmax_action = minmax( Board board, pc_turn );
+        pc_turn = !pc_turn;
+    };
+    
 };

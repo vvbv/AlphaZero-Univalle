@@ -16,7 +16,8 @@ int main(int argc, const char* argv[]){
         if( board.generate_board( items_quantity ) == 0 ){
             std::cout << "Tablero generado correctamente" << std::endl;
             game.set_board( board );
-            int pos[2] = {2,2};
+            game.set_items_to_collect( items_quantity );
+            /*int pos[2] = {2,2};
             std::tuple < int, int, int > tp;
             tp = game.get_pos_up_right( pos );
             std::cout << "UR" << "[" << std::get<0>( tp ) << "," << std::get<1>( tp ) << "] - " << std::get<2>( tp ) << std::endl;
@@ -34,6 +35,7 @@ int main(int argc, const char* argv[]){
             std::cout << "RD" << "[" << std::get<0>( tp ) << "," << std::get<1>( tp ) << "] - " << std::get<2>( tp ) << std::endl;
             tp = game.get_pos_right_up( pos );
             std::cout << "RU" << "[" << std::get<0>( tp ) << "," << std::get<1>( tp ) << "] - " << std::get<2>( tp ) << std::endl;
+            */
         }else{
             std::cout << "!# >> Número de items inválido" << std::endl; 
         }

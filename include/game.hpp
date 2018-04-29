@@ -9,14 +9,20 @@ class Game{
     private:
 
         Board board;
+        int items_to_collect;
+        int items_collected_by_human;
+        int items_collected_by_pc;
+        int minmax( Board board, bool pc_turn );
+        enum Action { up_right, up_left, left_up, left_down, down_left, down_right, right_down, right_up };
 
     public:
 
         Game();
         ~Game();
         void set_board( Board board );
+        void set_items_to_collect( int items_quantity );
         Board get_board();
-        int minmax( bool is_max, Board board, bool human_turn );
+        
         /*
             std::tuple < int <= This's pos in x or row
                             , int <= This's pos in y or column
@@ -31,6 +37,8 @@ class Game{
         std::tuple < int, int, int > get_pos_down_right( int pos[] );
         std::tuple < int, int, int > get_pos_right_down( int pos[] );
         std::tuple < int, int, int > get_pos_right_up( int pos[] );
+        void start_new_game( Board board );
+        void start_new_game();
 
 };
 

@@ -32,6 +32,10 @@ class Board{
         int get_box_value( int pos[2] );
         int get_BOARD_SIDE_SIZE();
         void print_board();
+        int get_item_id();
+        int get_horse_human_id();
+        int get_horse_pc_id();
+        int get_free_id();
         
 };
 

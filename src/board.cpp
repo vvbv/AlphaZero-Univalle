@@ -56,3 +56,19 @@ void Board::print_board(){
         std::cout << std::endl;
     };
 };
+
+int Board::get_item_id(){ 
+    return this->ITEM_ID; 
+};
+
+int Board::get_horse_human_id(){ 
+    return this->HORSE_HUMAN_ID 
+};
+
+int Board::get_horse_pc_id(){ 
+    return this->HORSE_PC_ID; 
+};
+
+int Board::get_free_id(){ 
+    return this->FREE_ID; 
+};
