@@ -35,9 +35,13 @@ int Game::minmax( Board board, bool pc_turn ){
     if( pc_turn ){
         current_max_position[0] = pos_pc[0];
         current_max_position[1] = pos_pc[1];
-    }else{
         current_min_position[0] = pos_human[0];
         current_min_position[1] = pos_human[1];
+    }else{
+        current_max_position[0] = pos_human[0];
+        current_max_position[1] = pos_human[1];
+        current_min_position[0] = pos_pc[0];
+        current_min_position[1] = pos_pc[1];
     };
 
     struct minmax_game_elements {
