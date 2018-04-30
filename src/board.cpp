@@ -78,6 +78,10 @@ int Board::get_items_quantity(){
     return this->items_quantity;
 };
 
+int Board::get_horse_pc_id(){
+    return this->HORSE_PC_ID;
+};
+
 void Board::change_value_in_boxes( int pos[2], int new_value ){
     this->boxes[ pos[0] ][ pos[1] ] = new_value;
 };
