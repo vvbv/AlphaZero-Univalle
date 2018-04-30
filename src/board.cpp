@@ -77,3 +77,7 @@ int Board::get_free_id(){
 int Board::get_items_quantity(){
     return this->items_quantity;
 };
+
+void Board::change_value_in_boxes( int pos[2], int new_value ){
+    this->boxes[ pos[0] ][ pos[1] ] = new_value;
+};

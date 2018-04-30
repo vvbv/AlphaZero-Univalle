@@ -29,14 +29,14 @@ class Game{
                                     , int <= This's the value what contains the matrix in that position.
                                             > 
         */
-        std::tuple < int, int, int > get_pos_up_right( int pos[] );
-        std::tuple < int, int, int > get_pos_up_left( int pos[] );
-        std::tuple < int, int, int > get_pos_left_up( int pos[] );
-        std::tuple < int, int, int > get_pos_left_down( int pos[] );
-        std::tuple < int, int, int > get_pos_down_left( int pos[] );
-        std::tuple < int, int, int > get_pos_down_right( int pos[] );
-        std::tuple < int, int, int > get_pos_right_down( int pos[] );
-        std::tuple < int, int, int > get_pos_right_up( int pos[] );
+        std::tuple < int, int, int > get_pos_up_right( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_up_left( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_left_up( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_left_down( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_down_left( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_down_right( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_right_down( Board board, int pos[] );
+        std::tuple < int, int, int > get_pos_right_up( Board board, int pos[] );
         void start_new_game( Board board );
         void start_new_game();
 

@@ -38,6 +38,7 @@ class Board{
         int get_horse_pc_id();
         int get_free_id();
         int get_items_quantity();
+        void change_value_in_boxes( int pos[2], int new_value );
 };
 
 #endif
