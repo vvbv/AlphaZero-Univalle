@@ -130,13 +130,13 @@ int Game::minmax( Board board, bool pc_turn ){
                 if( is_max ){
                     tmp_expansion_elements.pos_max_row = pos_row;
                     tmp_expansion_elements.pos_max_column = pos_column;
-                    if( pos_info == 9 ){
+                    if( pos_info == tmp_game_elements.board.get_horse_human_pc_id() ){
                         tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_id() );
                     };
                 }else{
                     tmp_expansion_elements.pos_min_row = pos_row;
                     tmp_expansion_elements.pos_min_column = pos_column;
-                    if( pos_info == 9 ){
+                    if( pos_info == tmp_game_elements.board.get_horse_human_pc_id() ){
                         tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );                        
                     };
                 };
