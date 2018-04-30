@@ -17,6 +17,7 @@ int main(int argc, const char* argv[]){
             std::cout << "Tablero generado correctamente" << std::endl;
             game.set_board( board );
             game.set_items_to_collect( items_quantity );
+            game.start_new_game();
             /*int pos[2] = {2,2};
             std::tuple < int, int, int > tp;
             tp = game.get_pos_up_right( pos );
