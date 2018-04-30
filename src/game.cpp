@@ -127,25 +127,13 @@ int Game::minmax( Board board, bool pc_turn ){
                     tmp_expansion_elements.pos_max_row = pos_row;
                     tmp_expansion_elements.pos_max_column = pos_column;
                     if( pos_info == 9 ){
-                        // If pc is max
-                        if( pc_turn ){same_pos_with_other_player
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_id() );
-                        }else{
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_id() );
-                        };
-                        
+                        tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_id() );
                     };
                 }else{
                     tmp_expansion_elements.pos_min_row = pos_row;
                     tmp_expansion_elements.pos_min_column = pos_column;
                     if( pos_info == 9 ){
-                        // If pc is max
-                        if( pc_turn ){
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
-                        }else{
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
-                        };
-                        
+                        tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );                        
                     };
                 };
 
@@ -163,14 +151,14 @@ int Game::minmax( Board board, bool pc_turn ){
                             tmp_expansion_elements.max_items_quantity += tmp_expansion_elements.min_items_quantity;
                             tmp_expansion_elements.min_items_quantity = 0;
                             tmp_expansion_elements.same_pos_with_other_player = true;
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
+                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_pc_id() );
                         };
                     }else{
                         if( pos_info == tmp_game_elements.board.get_horse_pc_id() ){
                             tmp_expansion_elements.max_items_quantity += tmp_expansion_elements.min_items_quantity;
                             tmp_expansion_elements.min_items_quantity = 0;
                             tmp_expansion_elements.same_pos_with_other_player = true;
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
+                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_pc_id() );
                         };
                     };
                 }else{
@@ -179,26 +167,23 @@ int Game::minmax( Board board, bool pc_turn ){
                             tmp_expansion_elements.min_items_quantity += tmp_expansion_elements.max_items_quantity;
                             tmp_expansion_elements.max_items_quantity = 0;
                             tmp_expansion_elements.same_pos_with_other_player = true;
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
+                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_pc_id() );
                         };
                     }else{
                         if( pos_info == tmp_game_elements.board.get_horse_pc_id() ){
                             tmp_expansion_elements.min_items_quantity += tmp_expansion_elements.max_items_quantity;
                             tmp_expansion_elements.max_items_quantity = 0;
                             tmp_expansion_elements.same_pos_with_other_player = true;
-                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_pc_id() );
+                            tmp_game_elements.board.change_value_in_boxes( current_position, tmp_game_elements.board.get_horse_human_pc_id() );
                         };
                     };
                 };
-
-
             };
-
         };
         is_max = !is_max;
-    }
-
+    };
 };
+
 std::tuple < int, int, int > Game::get_pos_up_right( Board board, int pos[] ){
     int new_pos_row = pos[0] - 2;
     int new_pos_column = pos[1] + 1;

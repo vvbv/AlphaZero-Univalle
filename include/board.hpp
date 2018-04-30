@@ -20,7 +20,7 @@ class Board{
         int HORSE_HUMAN_ID = 1;
         int HORSE_PC_ID = 2;
         int FREE_ID = 0;
-        int HORSE_PC_ID = 9;
+        int HORSE_HUMAN_PC_ID = 9;
         int items_quantity;
         std::vector < std::tuple < int, int > > get_list_pos_random( int number_elements );
 
@@ -39,7 +39,7 @@ class Board{
         int get_horse_pc_id();
         int get_free_id();
         int get_items_quantity();
-        int get_horse_pc_id();
+        int get_horse_human_pc_id();
         void change_value_in_boxes( int pos[2], int new_value );
 };
 
