@@ -142,7 +142,8 @@ int Game::minmax( Board board, bool pc_turn ){
                         << "DEPTH: " << std::get< 0 >( new_expansion ).depth << " - "
                         << "IS MAX: " << is_max << " - "   
                         << "IS PC TURN: " << pc_turn << " - " 
-                        << "EXP: " << expansions.size()
+                        << "EXP: " << expansions.size() << " - "
+                        << "IQ: " << board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity 
                         << std::endl;
                 
             };
