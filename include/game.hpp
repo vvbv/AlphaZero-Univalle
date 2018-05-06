@@ -4,9 +4,26 @@
 #include "board.hpp"
 #include <tuple>
 
+
+
 class Game{
 
     private:
+
+        struct minmax_game_elements {
+            int pos_max_row;
+            int pos_max_column;
+            int pos_min_row;
+            int pos_min_column;
+            int min_items_quantity;
+            int max_items_quantity;
+            int depth;
+            Board board;
+        };
+
+        struct index_in_non_dynamic_expansions{
+            int index;
+        };
 
         Board board;
         int items_to_collect;
@@ -14,6 +31,7 @@ class Game{
         int items_collected_by_pc;
         int minmax( Board board, bool pc_turn );
         enum Action { up_right, up_left, left_up, left_down, down_left, down_right, right_down, right_up };
+        bool compare_minmax_game_elements( minmax_game_elements *a, minmax_game_elements *b );
 
     public:
 
