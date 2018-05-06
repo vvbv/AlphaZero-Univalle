@@ -101,7 +101,7 @@ int Game::minmax( Board board, bool pc_turn ){
             if( pos_info != -1 ){
 
                 minmax_game_elements tmp_expansion_elements = tmp_game_elements;
-                //tmp_expansion_elements.depth = tmp_expansion_elements.depth + 1;
+                tmp_expansion_elements.depth = tmp_expansion_elements.depth + 1;
 
 
                 if( (pos_info == tmp_expansion_elements.board.get_horse_pc_id()) || (pos_info == tmp_expansion_elements.board.get_horse_human_id()) ){
@@ -125,26 +125,26 @@ int Game::minmax( Board board, bool pc_turn ){
                 };
 
                 std::tuple < minmax_game_elements > new_no_dynamic_expansion = std::make_tuple( tmp_expansion_elements );
-                bool comparation_result = compare_minmax_game_elements( &tmp_expansion_elements, &tmp_game_elements );
-                if( comparation_result ){
-                    no_dynamic_expansions.push_back( new_no_dynamic_expansion );
+                
+                no_dynamic_expansions.push_back( new_no_dynamic_expansion );
 
-                    index_in_non_dynamic_expansions index_nde;
-                    index_nde.index = no_dynamic_expansions.size() - 1;
+                index_in_non_dynamic_expansions index_nde;
+                index_nde.index = no_dynamic_expansions.size() - 1;
 
-                    std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > new_expansion = std::make_tuple( tmp_expansion_elements, index_nde );
-                    expansions.push_back( new_expansion );
+                std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > new_expansion = std::make_tuple( tmp_expansion_elements, index_nde );
+                expansions.push_back( new_expansion );
                     
-                    std::cout << "POS MAX: [" << std::get< 0 >( new_expansion ).pos_max_row << "," <<  std::get< 0 >( new_expansion ).pos_max_column << "] - " 
-                            << "POS MIN: [" << std::get< 0 >( new_expansion ).pos_min_row << "," <<  std::get< 0 >( new_expansion ).pos_min_column << "] - "
-                            << "MAX ITEMS: " << std::get< 0 >( new_expansion ).max_items_quantity << " - " 
-                            << "MAX ITEMS: " << std::get< 0 >( new_expansion ).min_items_quantity << " - " 
-                            << "DEPTH: " << std::get< 0 >( new_expansion ).depth << " - "
-                            << "IS MAX: " << is_max << " - "   
-                            << "IS PC TURN: " << pc_turn << " - " 
-                            << "EXP: " << expansions.size()
-                            << std::endl;
-                    };
+                std::cout 
+                        << "POS MAX: [" << std::get< 0 >( new_expansion ).pos_max_row << "," <<  std::get< 0 >( new_expansion ).pos_max_column << "] - " 
+                        << "POS MIN: [" << std::get< 0 >( new_expansion ).pos_min_row << "," <<  std::get< 0 >( new_expansion ).pos_min_column << "] - "
+                        << "MAX ITEMS: " << std::get< 0 >( new_expansion ).max_items_quantity << " - " 
+                        << "MAX ITEMS: " << std::get< 0 >( new_expansion ).min_items_quantity << " - " 
+                        << "DEPTH: " << std::get< 0 >( new_expansion ).depth << " - "
+                        << "IS MAX: " << is_max << " - "   
+                        << "IS PC TURN: " << pc_turn << " - " 
+                        << "EXP: " << expansions.size()
+                        << std::endl;
+                
             };
         };
         is_max = !is_max;
