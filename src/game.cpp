@@ -124,27 +124,49 @@ int Game::minmax( Board board, bool pc_turn ){
                 };
 
                 std::tuple < minmax_game_elements > new_no_dynamic_expansion = std::make_tuple( tmp_expansion_elements );
-                
-                no_dynamic_expansions.push_back( new_no_dynamic_expansion );
-
                 index_in_non_dynamic_expansions index_nde;
                 index_nde.index = no_dynamic_expansions.size() - 1;
+                no_dynamic_expansions.push_back( new_no_dynamic_expansion );
 
                 std::tuple < minmax_game_elements, index_in_non_dynamic_expansions > new_expansion = std::make_tuple( tmp_expansion_elements, index_nde );
-                expansions.push_back( new_expansion );
-                    
-                /*std::cout 
+                
+                bool is_different = true;
+                for( int x = 0; x < expansions.size(); x++  ){
+                    if(
+                        ( std::get<0>( no_dynamic_expansions[x] ).pos_max_column == std::get<0>( new_no_dynamic_expansion ).pos_max_column ) &&
+                        ( std::get<0>( no_dynamic_expansions[x] ).pos_max_row == std::get<0>( new_no_dynamic_expansion ).pos_max_row ) &&
+                        ( std::get<0>( no_dynamic_expansions[x] ).pos_min_column == std::get<0>( new_no_dynamic_expansion ).pos_min_column ) &&
+                        ( std::get<0>( no_dynamic_expansions[x] ).pos_min_row == std::get<0>( new_no_dynamic_expansion ).pos_min_row ) &&
+                        ( std::get<0>( no_dynamic_expansions[x] ).max_items_quantity == std::get<0>( new_no_dynamic_expansion ).max_items_quantity ) &&
+                        ( std::get<0>( no_dynamic_expansions[x] ).min_items_quantity == std::get<0>( new_no_dynamic_expansion ).min_items_quantity ) 
+                    ){
+                        std::cout << x << std::endl;
+                        is_different = false;
+                        break;
+                    };
+                };
+
+                if( is_different ){
+                    expansions.push_back( new_expansion );
+                    std::cout 
                         << "POS MAX: [" << std::get< 0 >( new_expansion ).pos_max_row << "," <<  std::get< 0 >( new_expansion ).pos_max_column << "] - " 
                         << "POS MIN: [" << std::get< 0 >( new_expansion ).pos_min_row << "," <<  std::get< 0 >( new_expansion ).pos_min_column << "] - "
                         << "MAX ITEMS: " << std::get< 0 >( new_expansion ).max_items_quantity << " - " 
-                        << "MAX ITEMS: " << std::get< 0 >( new_expansion ).min_items_quantity << " - " 
+                        << "MIX ITEMS: " << std::get< 0 >( new_expansion ).min_items_quantity << " - " 
                         << "DEPTH: " << std::get< 0 >( new_expansion ).depth << " - "
                         << "IS MAX: " << is_max << " - "   
                         << "IS PC TURN: " << pc_turn << " - " 
                         << "EXP: " << expansions.size() << " - "
                         << "IQ: " << board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity 
-                        << std::endl;*/
-                std::cout << board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity << " - " << expansions.size() << std::endl;
+                        << std::endl;
+                    //std::cout << board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity << " - " << expansions.size() << std::endl;
+
+                    // Paada arbitraria
+                    if( (board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity) == 0 ){
+                        break;
+                    };
+
+                };
             };
         };
         is_max = !is_max;
