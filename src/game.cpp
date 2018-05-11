@@ -12,7 +12,7 @@ Board Game::get_board(){
     return this->board;
 };
 int Game::minmax( Board board, bool pc_turn ){
-
+/*
     int pos_pc[2];
     int pos_human[2];
 
@@ -67,7 +67,7 @@ int Game::minmax( Board board, bool pc_turn ){
     while( expansions.size() > 0 ){
 
         last_node = expansions[ 0 ];
-        expansions.erase( expansions.begin() );
+        //expansions.erase( expansions.begin() );
 
         minmax_game_elements tmp_game_elements;
         tmp_game_elements = std::get< 0 >( last_node );
@@ -140,7 +140,7 @@ int Game::minmax( Board board, bool pc_turn ){
                         ( std::get<0>( no_dynamic_expansions[x] ).max_items_quantity == std::get<0>( new_no_dynamic_expansion ).max_items_quantity ) &&
                         ( std::get<0>( no_dynamic_expansions[x] ).min_items_quantity == std::get<0>( new_no_dynamic_expansion ).min_items_quantity ) 
                     ){
-                        std::cout << x << std::endl;
+                        std::cout << "Repetida en:" << x << std::endl;
                         is_different = false;
                         break;
                     };
@@ -165,99 +165,251 @@ int Game::minmax( Board board, bool pc_turn ){
                     if( (board.get_items_quantity() - std::get< 0 >( new_expansion ).max_items_quantity - std::get< 0 >( new_expansion ).min_items_quantity) == 0 ){
                         break;
                     };
-
                 };
             };
         };
         is_max = !is_max;
     };
+    */
 };
 
-std::tuple < int, int, int > Game::get_pos_up_right( Board board, int pos[] ){
+state_game Game::get_pos_up_right( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] - 2;
     int new_pos_column = pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_up_left( Board board, int pos[] ){
+state_game Game::get_pos_up_left( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] - 2;
     int new_pos_column = pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_left_up( Board board, int pos[] ){
+state_game Game::get_pos_left_up( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] - 1;
     int new_pos_column = pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_left_down( Board board, int pos[] ){
+state_game Game::get_pos_left_down( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] + 1;
     int new_pos_column = pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_down_left( Board board, int pos[] ){
+state_game Game::get_pos_down_left( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] + 2;
     int new_pos_column = pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_down_right( Board board, int pos[] ){
+state_game Game::get_pos_down_right( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] + 2;
     int new_pos_column = pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_right_down( Board board, int pos[] ){
+state_game Game::get_pos_right_down( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] + 1;
     int new_pos_column = pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
-std::tuple < int, int, int > Game::get_pos_right_up( Board board, int pos[] ){
+state_game Game::get_pos_right_up( state_game, int current_pos[], bool is_max ){
+    state_game new_state = state_game;
+    //new_state.depth = new_state.depth + 1;
     int new_pos_row = pos[0] - 1;
     int new_pos_column = pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        return std::make_tuple( new_pos_row, new_pos_column, board.get_box_value( new_pos ) );
+        int box_value = board.get_box_value( new_pos );
+        if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
+            new_state.invalid_move = true;
+            return new_state;
+        };
+        if( box_value == new_state.board.get_item_id() ){
+            if( is_max ){
+                new_state.max_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        };
+        return new_state;
     }else{
-        return std::make_tuple( pos[0], pos[1], -1 );
+        new_state.invalid_move = true;
+        return new_state;
     };
 };
 
@@ -272,11 +424,20 @@ void Game::start_new_game( Board board ){
 
 void Game::start_new_game(){
     
-    bool pc_turn = true; // In each game, pc starts first.
+    /*bool pc_turn = true; // In each game, pc starts first.
     while( ( this->items_collected_by_human + this->items_collected_by_pc - this->items_to_collect ) != 0 ){
         int minmax_action = minmax( this->board, pc_turn );
         pc_turn = !pc_turn;
-    };
+    };*/
+
+    state_game new_game;
+    new_game.min_items_quantity = 0;
+    new_game.max_items_quantity
+    new_game.depth = 0;
+    new_game.board = 0;
+    new_game.invalid_move = false;
+    std::vector < state_game > previous_moves;
+    max_move( new_game, previous_moves );
 
 };
 
@@ -292,4 +453,68 @@ bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_el
         return true;
     };
     return false;
+};
+
+state_game Game::maxmove( state_game state, std::vector < state_game > previous_moves ){
+    if( game_ended( state ) ){
+        std::cout << "Juego terminado" << std::endl;
+    }else{
+        state_game best_move;
+        std::vector < state_game > moves;
+        moves_pos_info.push_back( get_pos_up_right( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_up_left( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_left_up( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_left_down( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_down_left( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_down_right( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_right_down( state.board, current_position ) );
+        moves_pos_info.push_back( get_pos_right_up( state.board, current_position ) );
+        for( int index_move = 0; index_move < moves.size(); index_move++ ){
+            if( !moves[ index_move ].invalid_move ){
+                if ( std::find( previous_moves.begin(), previous_moves.end(), moves[ index_move ] ) == previous_moves.end() ){
+                    state_game min_game_state = min_move( moves[ index_move ] );
+                    if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
+                        best_move = moves[ index_move ];
+                    };
+                };
+            };
+        };
+        return best_move;
+    };
+};
+
+state_game Game::min_move( state_game state, std::vector < state_game > previous_moves ){
+    state_game best_move;
+    std::vector < state_game > moves;
+    moves_pos_info.push_back( get_pos_up_right( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_up_left( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_left_up( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_left_down( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_down_left( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_down_right( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_right_down( state.board, current_position ) );
+    moves_pos_info.push_back( get_pos_right_up( state.board, current_position ) );
+    for( int index_move = 0; index_move < moves.size(); index_move++ ){
+        if( !moves[ index_move ].invalid_move ){
+            if ( std::find( previous_moves.begin(), previous_moves.end(), moves[ index_move ] ) == previous_moves.end() ){
+                state_game max_game_state = max_move( moves[ index_move ] );
+                if( moves[ index_move ].min_items_quantity >= max_game_state.min_items_quantity ){
+                    best_move = moves[ index_move ];
+                };
+            };
+        };
+    };
+    return best_move;
+};
+
+bool Game::game_ended( state_game state, std::vector < std::tuple < int, int, int > > positions_visited ){
+    for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int tmp_pos[2] = { i, j }; 
+            if( state.board.get_box_value( tmp_pos ) != state.board.get_free_id() ){
+                return false;
+            };
+        };
+    };
+    return true;
 };
