@@ -436,7 +436,22 @@ void Game::start_new_game(){
     new_game.board = this->board;
     new_game.invalid_move = false;
     std::vector < State_game > previous_moves;
-    max_move( new_game, previous_moves );
+    for( int i = 0; i <  this->board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j <  this->board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            std::cout << this->board.get_box_value( i_j_tmp ) << " ";
+        };
+        std::cout << std::endl;
+    };
+    State_game best_mov = max_move( new_game, previous_moves );
+
+    for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+        };
+        std::cout << std::endl;
+    };
 
 };
 
@@ -488,20 +503,34 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     };
     if( game_ended( state ) ){
         std::cout << "Juego terminado" << std::endl;
+        return state;
     }else{
         State_game best_move;
         std::vector < State_game > moves;
-        moves.push_back( get_pos_up_right( state, current_position, true ) );
-        moves.push_back( get_pos_up_left( state, current_position, true ) );
-        moves.push_back( get_pos_left_up( state, current_position, true ) );
-        moves.push_back( get_pos_left_down( state, current_position, true ) );
-        moves.push_back( get_pos_down_left( state, current_position, true ) );
-        moves.push_back( get_pos_down_right( state, current_position, true ) );
-        moves.push_back( get_pos_right_down( state, current_position, true ) );
-        moves.push_back( get_pos_right_up( state, current_position, true ) );
+        State_game state_0 = state;
+        moves.push_back( get_pos_up_right( state_0, current_position, true ) );
+        State_game state_1 = state;
+        moves.push_back( get_pos_up_left( state_1, current_position, true ) );
+        State_game state_2 = state;
+        moves.push_back( get_pos_left_up( state_2, current_position, true ) );
+        State_game state_3 = state;
+        moves.push_back( get_pos_left_down( state_3, current_position, true ) );
+        State_game state_4 = state;
+        moves.push_back( get_pos_down_left( state_4, current_position, true ) );
+        State_game state_5 = state;
+        moves.push_back( get_pos_down_right( state_5, current_position, true ) );
+        State_game state_6 = state;
+        moves.push_back( get_pos_right_down( state_6, current_position, true ) );
+        State_game state_7 = state;
+        moves.push_back( get_pos_right_up( state_7, current_position, true ) );
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( !moves[ index_move ].invalid_move ){
                 previous_moves.push_back( state );
+                break;
+            };
+        };
+        for( int index_move = 0; index_move < moves.size(); index_move++ ){
+            if( !moves[ index_move ].invalid_move ){
                 bool no_exist = true;
                 for( int x = 0; x < previous_moves.size(); x++ ){
                     if( states_equals( previous_moves[x], moves[ index_move ] ) ){
@@ -535,17 +564,30 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
     };
     State_game best_move;
     std::vector < State_game > moves;
-    moves.push_back( get_pos_up_right( state, current_position, false ) );
-    moves.push_back( get_pos_up_left( state, current_position, false ) );
-    moves.push_back( get_pos_left_up( state, current_position, false ) );
-    moves.push_back( get_pos_left_down( state, current_position, false ) );
-    moves.push_back( get_pos_down_left( state, current_position, false ) );
-    moves.push_back( get_pos_down_right( state, current_position, false ) );
-    moves.push_back( get_pos_right_down( state, current_position, false ) );
-    moves.push_back( get_pos_right_up( state, current_position, false ) );
+    State_game state_0 = state;
+    moves.push_back( get_pos_up_right( state_0, current_position, false ) );
+    State_game state_1 = state;
+    moves.push_back( get_pos_up_left( state_1, current_position, false ) );
+    State_game state_2 = state;
+    moves.push_back( get_pos_left_up( state_2, current_position, false ) );
+    State_game state_3 = state;
+    moves.push_back( get_pos_left_down( state_3, current_position, false ) );
+    State_game state_4 = state;
+    moves.push_back( get_pos_down_left( state_4, current_position, false ) );
+    State_game state_5 = state;
+    moves.push_back( get_pos_down_right( state_5, current_position, false ) );
+    State_game state_6 = state;
+    moves.push_back( get_pos_right_down( state_6, current_position, false ) );
+    State_game state_7 = state;
+    moves.push_back( get_pos_right_up( state_7, current_position, false ) );
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
         if( !moves[ index_move ].invalid_move ){
             previous_moves.push_back( state );
+            break;
+        };
+    };
+    for( int index_move = 0; index_move < moves.size(); index_move++ ){
+        if( !moves[ index_move ].invalid_move ){
             bool no_exist = true;
             for( int x = 0; x < previous_moves.size(); x++ ){
                 if( states_equals( previous_moves[x], moves[ index_move ] ) ){
