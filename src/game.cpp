@@ -174,7 +174,7 @@ int Game::minmax( Board board, bool pc_turn ){
 
 State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] - 2;
     int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -191,6 +191,14 @@ State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             }else{
                 new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
@@ -204,7 +212,7 @@ State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is
 
 State_game Game::get_pos_up_left( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] - 2;
     int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -224,6 +232,14 @@ State_game Game::get_pos_up_left( State_game state, int current_pos[2], bool is_
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -234,7 +250,7 @@ State_game Game::get_pos_up_left( State_game state, int current_pos[2], bool is_
 
 State_game Game::get_pos_left_up( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] - 1;
     int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -254,6 +270,14 @@ State_game Game::get_pos_left_up( State_game state, int current_pos[2], bool is_
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -264,7 +288,7 @@ State_game Game::get_pos_left_up( State_game state, int current_pos[2], bool is_
 
 State_game Game::get_pos_left_down( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] + 1;
     int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -284,6 +308,14 @@ State_game Game::get_pos_left_down( State_game state, int current_pos[2], bool i
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -294,7 +326,7 @@ State_game Game::get_pos_left_down( State_game state, int current_pos[2], bool i
 
 State_game Game::get_pos_down_left( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] + 2;
     int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -314,6 +346,14 @@ State_game Game::get_pos_down_left( State_game state, int current_pos[2], bool i
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -324,7 +364,7 @@ State_game Game::get_pos_down_left( State_game state, int current_pos[2], bool i
 
 State_game Game::get_pos_down_right( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] + 2;
     int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -344,6 +384,14 @@ State_game Game::get_pos_down_right( State_game state, int current_pos[2], bool 
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -354,7 +402,7 @@ State_game Game::get_pos_down_right( State_game state, int current_pos[2], bool 
 
 State_game Game::get_pos_right_down( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] + 1;
     int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -374,6 +422,14 @@ State_game Game::get_pos_right_down( State_game state, int current_pos[2], bool 
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
         };
         return new_state;
     }else{
@@ -384,7 +440,7 @@ State_game Game::get_pos_right_down( State_game state, int current_pos[2], bool 
 
 State_game Game::get_pos_right_up( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
-    //new_state.depth = new_state.depth + 1;
+    new_state.depth = new_state.depth + 1;
     int new_pos_row = current_pos[0] - 1;
     int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
@@ -401,6 +457,14 @@ State_game Game::get_pos_right_up( State_game state, int current_pos[2], bool is
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             }else{
                 new_state.min_items_quantity++;
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            };
+        }else if( box_value == new_state.board.get_free_id() ){
+            if( is_max ){
+                new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_pc_id() );
+                new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
+            }else{
                 new_state.board.change_value_in_boxes( new_pos, new_state.board.get_horse_human_id() );
                 new_state.board.change_value_in_boxes( current_pos, new_state.board.get_free_id() );
             };
@@ -489,8 +553,9 @@ bool Game::states_equals( State_game a, State_game b ){
     return false;
 };
 
-State_game Game::max_move( State_game state, std::vector < State_game > previous_moves ){
-    std::cout << "MAX" << std::endl;
+State_game Game::max_move( State_game state, std::vector < State_game > previous_moves_x ){
+    std::vector < State_game > previous_moves = previous_moves_x;
+    //std::cout << "MAX" << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -502,7 +567,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
         };
     };
     if( game_ended( state ) ){
-        std::cout << "Juego terminado" << std::endl;
+        //std::cout << "Juego terminado" << std::endl;
         return state;
     }else{
         State_game best_move;
@@ -540,6 +605,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
                 };
                 if( no_exist ){
                     State_game min_game_state = min_move( moves[ index_move ], previous_moves );
+                    //std::cout << "Prof max: " << min_game_state.depth << std::endl;
                     if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
                         best_move = moves[ index_move ];
                     };
@@ -550,8 +616,9 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     };
 };
 
-State_game Game::min_move( State_game state, std::vector < State_game > previous_moves ){
-    std::cout << "MIN" << std::endl;
+State_game Game::min_move( State_game state, std::vector < State_game > previous_moves_x ){
+    std::vector < State_game > previous_moves = previous_moves_x;
+    //std::cout << "MIN" << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -596,8 +663,9 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
                 };
             };
             if( no_exist ){
-                State_game max_game_state = max_move( moves[ index_move ], previous_moves );
-                if( moves[ index_move ].min_items_quantity >= max_game_state.min_items_quantity ){
+                State_game min_game_state = max_move( moves[ index_move ], previous_moves );
+                //std::cout << "Prof min: " << min_game_state.depth << std::endl;
+                if( moves[ index_move ].min_items_quantity >= min_game_state.min_items_quantity ){
                     best_move = moves[ index_move ];
                 };
             };
@@ -610,7 +678,7 @@ bool Game::game_ended( State_game state ){
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
             int tmp_pos[2] = { i, j }; 
-            if( state.board.get_box_value( tmp_pos ) != state.board.get_free_id() ){
+            if( state.board.get_box_value( tmp_pos ) == state.board.get_item_id() ){
                 return false;
             };
         };
