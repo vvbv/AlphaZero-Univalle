@@ -2,9 +2,8 @@
 #define GAME_HPP_
 
 #include "board.hpp"
+#include "state_game.hpp"
 #include <tuple>
-
-
 
 class Game{
 
@@ -25,14 +24,6 @@ class Game{
             int index;
         };
 
-        struct state_game {
-            int min_items_quantity;
-            int max_items_quantity;
-            int depth;
-            Board board;
-            bool invalid_move;
-        };
-
         Board board;
         int items_to_collect;
         int items_collected_by_human;
@@ -40,10 +31,18 @@ class Game{
         int minmax( Board board, bool pc_turn );
         enum Action { up_right, up_left, left_up, left_down, down_left, down_right, right_down, right_up };
         bool compare_minmax_game_elements( minmax_game_elements *a, minmax_game_elements *b );
-        state_game max_move( state_game state, std::vector < state_game > previous_moves );
-        state_game min_move( state_game state, std::vector < state_game > previous_moves );
-        bool game_ended( state_game state );
-        
+        State_game max_move( State_game state, std::vector < State_game > previous_moves );
+        State_game min_move( State_game state, std::vector < State_game > previous_moves );
+        State_game get_pos_up_right( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_up_left( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_left_up( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_left_down( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_down_left( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_down_right( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_right_down( State_game state, int current_pos[2], bool is_max );
+        State_game get_pos_right_up( State_game state, int current_pos[2], bool is_max );
+        bool game_ended( State_game state );
+        bool states_equals( State_game a, State_game b );
 
     public:
 
@@ -52,22 +51,6 @@ class Game{
         void set_board( Board board );
         void set_items_to_collect( int items_quantity );
         Board get_board();
-        
-        /*
-            std::tuple < int <= This's pos in x or row
-                            , int <= This's pos in y or column
-                                    , int <= This's the value what contains the matrix in that position.
-                                            > 
-        */
-        state_game get_pos_up_right( state_game, int current_pos[], bool is_max );
-        state_game get_pos_up_left( state_game, int current_pos[], bool is_max );
-        state_game get_pos_left_up( state_game, int current_pos[], bool is_max );
-        state_game get_pos_left_down( state_game, int current_pos[], bool is_max );
-        state_game get_pos_down_left( state_game, int current_pos[], bool is_max );
-        state_game> get_pos_down_right( state_game, int current_pos[], bool is_max );
-        state_game get_pos_right_down( state_game, int current_pos[], bool is_max );
-        state_game get_pos_right_up( state_game, int current_pos[], bool is_max );
-
         void start_new_game( Board board );
         void start_new_game();
 

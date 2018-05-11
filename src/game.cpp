@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-
 Game::Game(){};
 Game::~Game(){};
 void Game::set_board( Board board ){
@@ -173,11 +172,11 @@ int Game::minmax( Board board, bool pc_turn ){
     */
 };
 
-state_game Game::get_pos_up_right( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] - 2;
-    int new_pos_column = pos[1] + 1;
+    int new_pos_row = current_pos[0] - 2;
+    int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
         int box_value = board.get_box_value( new_pos );
@@ -203,11 +202,11 @@ state_game Game::get_pos_up_right( state_game, int current_pos[], bool is_max ){
     };
 };
 
-state_game Game::get_pos_up_left( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_up_left( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] - 2;
-    int new_pos_column = pos[1] - 1;
+    int new_pos_row = current_pos[0] - 2;
+    int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
         int box_value = board.get_box_value( new_pos );
@@ -233,11 +232,11 @@ state_game Game::get_pos_up_left( state_game, int current_pos[], bool is_max ){
     };
 };
 
-state_game Game::get_pos_left_up( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_left_up( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] - 1;
-    int new_pos_column = pos[1] - 2;
+    int new_pos_row = current_pos[0] - 1;
+    int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
         int box_value = board.get_box_value( new_pos );
@@ -263,11 +262,11 @@ state_game Game::get_pos_left_up( state_game, int current_pos[], bool is_max ){
     };
 };
 
-state_game Game::get_pos_left_down( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_left_down( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] + 1;
-    int new_pos_column = pos[1] - 2;
+    int new_pos_row = current_pos[0] + 1;
+    int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
         int box_value = board.get_box_value( new_pos );
@@ -293,11 +292,11 @@ state_game Game::get_pos_left_down( state_game, int current_pos[], bool is_max )
     };
 };
 
-state_game Game::get_pos_down_left( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_down_left( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] + 2;
-    int new_pos_column = pos[1] - 1;
+    int new_pos_row = current_pos[0] + 2;
+    int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
         int box_value = board.get_box_value( new_pos );
@@ -323,11 +322,11 @@ state_game Game::get_pos_down_left( state_game, int current_pos[], bool is_max )
     };
 };
 
-state_game Game::get_pos_down_right( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_down_right( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] + 2;
-    int new_pos_column = pos[1] + 1;
+    int new_pos_row = current_pos[0] + 2;
+    int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
         int box_value = board.get_box_value( new_pos );
@@ -353,11 +352,11 @@ state_game Game::get_pos_down_right( state_game, int current_pos[], bool is_max 
     };
 };
 
-state_game Game::get_pos_right_down( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_right_down( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] + 1;
-    int new_pos_column = pos[1] + 2;
+    int new_pos_row = current_pos[0] + 1;
+    int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
         int box_value = board.get_box_value( new_pos );
@@ -383,11 +382,11 @@ state_game Game::get_pos_right_down( state_game, int current_pos[], bool is_max 
     };
 };
 
-state_game Game::get_pos_right_up( state_game, int current_pos[], bool is_max ){
-    state_game new_state = state_game;
+State_game Game::get_pos_right_up( State_game state, int current_pos[2], bool is_max ){
+    State_game new_state = state;
     //new_state.depth = new_state.depth + 1;
-    int new_pos_row = pos[0] - 1;
-    int new_pos_column = pos[1] + 2;
+    int new_pos_row = current_pos[0] - 1;
+    int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
         int box_value = board.get_box_value( new_pos );
@@ -430,13 +429,13 @@ void Game::start_new_game(){
         pc_turn = !pc_turn;
     };*/
 
-    state_game new_game;
+    State_game new_game;
     new_game.min_items_quantity = 0;
-    new_game.max_items_quantity
+    new_game.max_items_quantity = 0;
     new_game.depth = 0;
-    new_game.board = 0;
+    new_game.board = this->board;
     new_game.invalid_move = false;
-    std::vector < state_game > previous_moves;
+    std::vector < State_game > previous_moves;
     max_move( new_game, previous_moves );
 
 };
@@ -455,49 +454,107 @@ bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_el
     return false;
 };
 
-state_game Game::maxmove( state_game state, std::vector < state_game > previous_moves ){
+bool Game::states_equals( State_game a, State_game b ){
+
+    for( int i = 0; i < a.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < b.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            if( a.board.get_box_value( i_j_tmp ) != b.board.get_box_value( i_j_tmp ) ){
+                return false;
+            };
+        };
+    };
+
+    if(
+        ( a.min_items_quantity == b.min_items_quantity ) &&
+        ( a.max_items_quantity == b.max_items_quantity )
+    ){
+        return true;
+    };
+    return false;
+};
+
+State_game Game::max_move( State_game state, std::vector < State_game > previous_moves ){
+    std::cout << "MAX" << std::endl;
+    int current_position[2];
+    for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int tmp_pos[2] = { i, j }; 
+            if( state.board.get_box_value( tmp_pos ) == state.board.get_horse_pc_id() ){
+                current_position[0] = i;
+                current_position[1] = j;
+            };
+        };
+    };
     if( game_ended( state ) ){
         std::cout << "Juego terminado" << std::endl;
     }else{
-        state_game best_move;
-        std::vector < state_game > moves;
-        moves_pos_info.push_back( get_pos_up_right( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_up_left( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_left_up( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_left_down( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_down_left( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_down_right( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_right_down( state.board, current_position ) );
-        moves_pos_info.push_back( get_pos_right_up( state.board, current_position ) );
+        State_game best_move;
+        std::vector < State_game > moves;
+        moves.push_back( get_pos_up_right( state, current_position, true ) );
+        moves.push_back( get_pos_up_left( state, current_position, true ) );
+        moves.push_back( get_pos_left_up( state, current_position, true ) );
+        moves.push_back( get_pos_left_down( state, current_position, true ) );
+        moves.push_back( get_pos_down_left( state, current_position, true ) );
+        moves.push_back( get_pos_down_right( state, current_position, true ) );
+        moves.push_back( get_pos_right_down( state, current_position, true ) );
+        moves.push_back( get_pos_right_up( state, current_position, true ) );
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( !moves[ index_move ].invalid_move ){
-                if ( std::find( previous_moves.begin(), previous_moves.end(), moves[ index_move ] ) == previous_moves.end() ){
-                    state_game min_game_state = min_move( moves[ index_move ] );
+                previous_moves.push_back( state );
+                bool no_exist = true;
+                for( int x = 0; x < previous_moves.size(); x++ ){
+                    if( states_equals( previous_moves[x], moves[ index_move ] ) ){
+                        no_exist = false;
+                        break;
+                    };
+                };
+                if( no_exist ){
+                    State_game min_game_state = min_move( moves[ index_move ], previous_moves );
                     if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
                         best_move = moves[ index_move ];
                     };
-                };
+                };                
             };
         };
         return best_move;
     };
 };
 
-state_game Game::min_move( state_game state, std::vector < state_game > previous_moves ){
-    state_game best_move;
-    std::vector < state_game > moves;
-    moves_pos_info.push_back( get_pos_up_right( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_up_left( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_left_up( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_left_down( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_down_left( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_down_right( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_right_down( state.board, current_position ) );
-    moves_pos_info.push_back( get_pos_right_up( state.board, current_position ) );
+State_game Game::min_move( State_game state, std::vector < State_game > previous_moves ){
+    std::cout << "MIN" << std::endl;
+    int current_position[2];
+    for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int tmp_pos[2] = { i, j }; 
+            if( state.board.get_box_value( tmp_pos ) == state.board.get_horse_human_id() ){
+                current_position[0] = i;
+                current_position[1] = j;
+            };
+        };
+    };
+    State_game best_move;
+    std::vector < State_game > moves;
+    moves.push_back( get_pos_up_right( state, current_position, false ) );
+    moves.push_back( get_pos_up_left( state, current_position, false ) );
+    moves.push_back( get_pos_left_up( state, current_position, false ) );
+    moves.push_back( get_pos_left_down( state, current_position, false ) );
+    moves.push_back( get_pos_down_left( state, current_position, false ) );
+    moves.push_back( get_pos_down_right( state, current_position, false ) );
+    moves.push_back( get_pos_right_down( state, current_position, false ) );
+    moves.push_back( get_pos_right_up( state, current_position, false ) );
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
         if( !moves[ index_move ].invalid_move ){
-            if ( std::find( previous_moves.begin(), previous_moves.end(), moves[ index_move ] ) == previous_moves.end() ){
-                state_game max_game_state = max_move( moves[ index_move ] );
+            previous_moves.push_back( state );
+            bool no_exist = true;
+            for( int x = 0; x < previous_moves.size(); x++ ){
+                if( states_equals( previous_moves[x], moves[ index_move ] ) ){
+                    no_exist = false;
+                    break;
+                };
+            };
+            if( no_exist ){
+                State_game max_game_state = max_move( moves[ index_move ], previous_moves );
                 if( moves[ index_move ].min_items_quantity >= max_game_state.min_items_quantity ){
                     best_move = moves[ index_move ];
                 };
@@ -507,7 +564,7 @@ state_game Game::min_move( state_game state, std::vector < state_game > previous
     return best_move;
 };
 
-bool Game::game_ended( state_game state, std::vector < std::tuple < int, int, int > > positions_visited ){
+bool Game::game_ended( State_game state ){
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
             int tmp_pos[2] = { i, j }; 
