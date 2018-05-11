@@ -536,7 +536,7 @@ bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_el
 bool Game::states_equals( State_game a, State_game b ){
 
     for( int i = 0; i < a.board.get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j < b.board.get_BOARD_SIDE_SIZE(); j++ ){
+        for( int j = 0; j < a.board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
             if( a.board.get_box_value( i_j_tmp ) != b.board.get_box_value( i_j_tmp ) ){
                 return false;
@@ -618,6 +618,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
 
 State_game Game::min_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
+    //std::cout << state.depth << std::endl;
     //std::cout << "MIN" << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
