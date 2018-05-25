@@ -10,8 +10,8 @@ void Game::set_board( Board board ){
 Board Game::get_board(){
     return this->board;
 };
-int Game::minmax( Board board, bool pc_turn ){
-/*
+/*int Game::minmax( Board board, bool pc_turn ){
+
     int pos_pc[2];
     int pos_human[2];
 
@@ -169,8 +169,7 @@ int Game::minmax( Board board, bool pc_turn ){
         };
         is_max = !is_max;
     };
-    */
-};
+};*/
 
 State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is_max ){
     State_game new_state = state;
@@ -507,6 +506,7 @@ void Game::start_new_game(){
         };
         std::cout << std::endl;
     };
+    std::cout << std::endl << "Movimiento" << std::endl;
     State_game best_mov = max_move( new_game, previous_moves );
 
     for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
@@ -556,6 +556,7 @@ bool Game::states_equals( State_game a, State_game b ){
 State_game Game::max_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
     //std::cout << "MAX" << std::endl;
+    //std::cout << state.depth << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -568,6 +569,8 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     };
     if( game_ended( state ) ){
         //std::cout << "Juego terminado" << std::endl;
+        return state;
+    }else if( state.depth == 8 ){
         return state;
     }else{
         State_game best_move;

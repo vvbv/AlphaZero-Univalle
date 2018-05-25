@@ -28,7 +28,7 @@ class Game{
         int items_to_collect;
         int items_collected_by_human;
         int items_collected_by_pc;
-        int minmax( Board board, bool pc_turn );
+        //int minmax( Board board, bool pc_turn );
         enum Action { up_right, up_left, left_up, left_down, down_left, down_right, right_down, right_up };
         bool compare_minmax_game_elements( minmax_game_elements *a, minmax_game_elements *b );
         State_game max_move( State_game state, std::vector < State_game > previous_moves_x );
