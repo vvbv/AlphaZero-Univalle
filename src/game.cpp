@@ -325,12 +325,6 @@ void Game::start_new_game( Board board ){
 };
 
 void Game::start_new_game(){
-    
-    /*bool pc_turn = true; // In each game, pc starts first.
-    while( ( this->items_collected_by_human + this->items_collected_by_pc - this->items_to_collect ) != 0 ){
-        int minmax_action = minmax( this->board, pc_turn );
-        pc_turn = !pc_turn;
-    };*/
 
     State_game new_game;
     new_game.min_items_quantity = 0;
@@ -408,7 +402,6 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
         };
     };
     if( game_ended( state ) ){
-        //std::cout << "Juego terminado" << std::endl;
         return state;
     }else if( state.depth == 8 ){
         return state;
@@ -451,10 +444,15 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
                     //std::cout << "Prof max: " << min_game_state.depth << std::endl;
                     if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
                         best_move = moves[ index_move ];
+                        /*std::cout << "max_max:" << moves[ index_move ].max_items_quantity 
+                                  << " VS max_min:" << min_game_state.max_items_quantity
+                                  << " BEST " << best_move.max_items_quantity << std::endl;*/
+                        
                     };
                 };                
             };
         };
+        std::cout << "BEST: " << best_move.max_items_quantity << std::endl;
         return best_move;
     };
 };
