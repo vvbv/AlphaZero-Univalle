@@ -342,7 +342,7 @@ void Game::start_new_game(){
     };
     std::cout << std::endl << "Movimiento" << std::endl;
     State_game best_mov = max_move( new_game, previous_moves );
-    std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
+    //std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
     for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
@@ -448,24 +448,17 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
                     State_game min_game_state = min_move( moves[ index_move ], previous_moves );
                     //std::cout << "Prof max: " << min_game_state.depth << std::endl;
                     if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
-                        best_move = moves[ index_move ];     
-                        //best_move.max_items_quantity += total_max_items_quantity;                
+                        best_move = moves[ index_move ];              
                     };
                 };                
             };
         };
-        std::cout << "BEST: " << best_move.max_items_quantity << std::endl;
         return best_move;
     };
 };
 
 State_game Game::min_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
-    //int total_min_items_quantity = 0;
-    /*for( int i = 0; i < previous_moves.size(); i++ ){
-        state.min_items_quantity += previous_moves[i].min_items_quantity;
-        state.max_items_quantity += previous_moves[i].max_items_quantity;
-    };*/
     //std::cout << state.depth << std::endl;
     //std::cout << "MIN" << std::endl;
     int current_position[2];
@@ -516,7 +509,6 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
                 //std::cout << "Prof min: " << min_game_state.depth << std::endl;
                 if( moves[ index_move ].min_items_quantity >= min_game_state.min_items_quantity ){
                     best_move = moves[ index_move ];
-                    //best_move.min_items_quantity += total_min_items_quantity;
                 };
             };
         };
