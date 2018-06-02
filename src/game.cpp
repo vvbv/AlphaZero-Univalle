@@ -19,33 +19,42 @@ void Game::start_new_game( Board board, int max_depth  ){
 };
 
 void Game::start_new_game(){
-    this->max_depth = 5;
+    std::cout << "#! >> Ingrese la profundiad" << std::endl;
+    std::cout << "#! << ";
+    std::cin >> this->max_depth;
     State_game new_game;
     new_game.min_items_quantity = 0;
     new_game.max_items_quantity = 0;
     new_game.depth = 0;
     new_game.board = this->board;
     new_game.invalid_move = false;
-    std::vector < State_game > previous_moves;
+    std::cout << std::endl << "\n#! >> Tablero\n" << std::endl;
     for( int i = 0; i <  this->board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  this->board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
-            std::cout << this->board.get_box_value( i_j_tmp ) << " ";
+            std::cout << " " << this->board.get_box_value( i_j_tmp );
         };
         std::cout << std::endl;
     };
-    std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
+    
+    std::vector < State_game > previous_moves;
     State_game best_mov = max_move( new_game, previous_moves );
     previous_moves = {};
-    //std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
+    std::cout << std::endl << "!# >> Movimiento [ PC(2) ]\n" << std::endl;
     for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
-            std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+            std::cout << " " << best_mov.board.get_box_value( i_j_tmp );
         };
         std::cout << std::endl;
     };
-    while( true ){
+    bool the_came_continues = true;
+    if( game_ended( best_mov ) ){
+        std::cout << "\n#! >> Juego terminado" << std::endl;
+        std::cout << "#! >> Puntuación: PC[ " << best_mov.max_items_quantity << " ] Jugador Anonimo[ " << best_mov.min_items_quantity << " ]"<< std::endl;
+        the_came_continues = false;
+    };
+    while( the_came_continues ){
         best_mov.depth = 0;
         int current_position[2];
         for( int i = 0; i < best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
@@ -59,6 +68,7 @@ void Game::start_new_game(){
         };
         int option;
         std::string option_string;
+        std::cout << "\n#! << ";
         std::cin >> option_string;
         option = std::stoi( option_string );
         switch ( option )  
@@ -89,30 +99,35 @@ void Game::start_new_game(){
                 break;
             default:  
                 new_game = get_pos_up_right( best_mov, current_position, false );
-                std::cout << "Error, default 0" << std::endl; 
+                std::cout << "#! >> Error, default 0" << std::endl; 
         };
 
-        std::cout << std::endl << "Movimiento [ USER ]" << std::endl;
+        std::cout << std::endl << "#! >> Movimiento [ USUARIO(1) ]\n" << std::endl;
         for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
             for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
                 int i_j_tmp[2] = {i, j}; 
-                std::cout << new_game.board.get_box_value( i_j_tmp ) << " ";
+                std::cout << " " << new_game.board.get_box_value( i_j_tmp );
             };
             std::cout << std::endl;
         };
 
-        std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
+        std::cout << std::endl << "#! >> Movimiento [ PC(2) ]\n" << std::endl;
         best_mov = max_move( new_game, previous_moves );
         previous_moves = {};
         std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
         for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
             for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
                 int i_j_tmp[2] = {i, j}; 
-                std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+                std::cout << " " << best_mov.board.get_box_value( i_j_tmp );
             };
             std::cout << std::endl;
         };
-        break;
+
+        if( game_ended( best_mov ) ){
+            std::cout << "\n#! >> Juego terminado" << std::endl;
+            std::cout << "#! >> Puntuación: PC[ " << best_mov.max_items_quantity << " ] Jugador Anonimo[ " << best_mov.min_items_quantity << " ]"<< std::endl;
+            break;
+        };
     };
 };
 
@@ -122,8 +137,8 @@ State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is
     int new_pos_row = current_pos[0] - 2;
     int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row >= 0 ) && ( new_pos_column < new_state.board.get_BOARD_SIDE_SIZE() ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -161,7 +176,7 @@ State_game Game::get_pos_up_left( State_game state, int current_pos[2], bool is_
     int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
-        int box_value = board.get_box_value( new_pos );
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -199,7 +214,7 @@ State_game Game::get_pos_left_up( State_game state, int current_pos[2], bool is_
     int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
     if( ( new_pos_row >= 0 ) && ( new_pos_column >= 0 ) ){
-        int box_value = board.get_box_value( new_pos );
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -236,8 +251,8 @@ State_game Game::get_pos_left_down( State_game state, int current_pos[2], bool i
     int new_pos_row = current_pos[0] + 1;
     int new_pos_column = current_pos[1] - 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row < new_state.board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -274,8 +289,8 @@ State_game Game::get_pos_down_left( State_game state, int current_pos[2], bool i
     int new_pos_row = current_pos[0] + 2;
     int new_pos_column = current_pos[1] - 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row < new_state.board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column >= 0 ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -312,8 +327,8 @@ State_game Game::get_pos_down_right( State_game state, int current_pos[2], bool 
     int new_pos_row = current_pos[0] + 2;
     int new_pos_column = current_pos[1] + 1;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row < new_state.board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < new_state.board.get_BOARD_SIDE_SIZE() ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -350,8 +365,8 @@ State_game Game::get_pos_right_down( State_game state, int current_pos[2], bool 
     int new_pos_row = current_pos[0] + 1;
     int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row < board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row < new_state.board.get_BOARD_SIDE_SIZE() ) && ( new_pos_column < new_state.board.get_BOARD_SIDE_SIZE() ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -388,8 +403,8 @@ State_game Game::get_pos_right_up( State_game state, int current_pos[2], bool is
     int new_pos_row = current_pos[0] - 1;
     int new_pos_column = current_pos[1] + 2;
     int new_pos[2] = { new_pos_row, new_pos_column };
-    if( ( new_pos_row >= 0 ) && ( new_pos_column < board.get_BOARD_SIDE_SIZE() ) ){
-        int box_value = board.get_box_value( new_pos );
+    if( ( new_pos_row >= 0 ) && ( new_pos_column < new_state.board.get_BOARD_SIDE_SIZE() ) ){
+        int box_value = new_state.board.get_box_value( new_pos );
         if( (box_value == new_state.board.get_horse_pc_id()) || (box_value == new_state.board.get_horse_human_id()) ){
             new_state.invalid_move = true;
             return new_state;
@@ -471,8 +486,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     };
     if( game_ended( state ) ){
         return state;
-    }else if( state.depth == this->max_depth ){
-        //std::cout << "PT " << state.max_items_quantity << std::endl;
+    }else if( state.depth >= this->max_depth ){
         return state;
     }else{
         State_game best_move;
@@ -496,6 +510,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( !moves[ index_move ].invalid_move ){
                 previous_moves.push_back( state );
+                moves.erase( moves.begin() + index_move );
                 break;
             };
         };
@@ -560,6 +575,7 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
         if( !moves[ index_move ].invalid_move ){
             previous_moves.push_back( state );
+            moves.erase( moves.begin() + index_move );
             break;
         };
     };
