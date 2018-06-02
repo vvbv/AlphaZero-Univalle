@@ -340,8 +340,9 @@ void Game::start_new_game(){
         };
         std::cout << std::endl;
     };
-    std::cout << std::endl << "Movimiento" << std::endl;
+    std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
     State_game best_mov = max_move( new_game, previous_moves );
+    previous_moves.clear();
     //std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
     for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -350,7 +351,75 @@ void Game::start_new_game(){
         };
         std::cout << std::endl;
     };
+    while( true ){
+        
+        best_mov.depth = 0;
+        int current_position[2];
+        for( int i = 0; i < best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j < best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int tmp_pos[2] = { i, j }; 
+                if( best_mov.board.get_box_value( tmp_pos ) == best_mov.board.get_horse_human_id() ){
+                    current_position[0] = i;
+                    current_position[1] = j;
+                };
+            };
+        };
+        int option;
+        std::string option_string;
+        std::cin >> option_string;
+        option = std::stoi( option_string );
+        switch ( option )  
+        {  
+            case 0:   
+                new_game = get_pos_up_right( best_mov, current_position, false );
+                break;
+            case 1:   
+                new_game = get_pos_up_left( best_mov, current_position, false );
+                break;
+            case 2:   
+                new_game = get_pos_left_up( best_mov, current_position, false );
+                break;
+            case 3:
+                new_game = get_pos_left_down( best_mov, current_position, false );   
+                break;
+            case 4:
+                new_game = get_pos_down_left( best_mov, current_position, false );   
+                break;
+            case 5:
+                new_game = get_pos_down_right( best_mov, current_position, false );   
+                break;
+            case 6:
+                new_game = get_pos_right_down( best_mov, current_position, false );   
+                break;
+            case 7:
+                new_game = get_pos_right_up( best_mov, current_position, false );   
+                break;
+            default:  
+                new_game = get_pos_up_right( best_mov, current_position, false );
+                std::cout << "Error, default 0" << std::endl; 
+        };
 
+        std::cout << std::endl << "Movimiento [ USER ]" << std::endl;
+        for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int i_j_tmp[2] = {i, j}; 
+                std::cout << new_game.board.get_box_value( i_j_tmp ) << " ";
+            };
+            std::cout << std::endl;
+        };
+
+        std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
+        best_mov = max_move( new_game, previous_moves );
+        previous_moves.clear();
+        std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
+        for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int i_j_tmp[2] = {i, j}; 
+                std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+            };
+            std::cout << std::endl;
+        };
+    };
 };
 
 bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_elements *b ){
@@ -377,7 +446,6 @@ bool Game::states_equals( State_game a, State_game b ){
             };
         };
     };
-
     if(
         ( a.min_items_quantity == b.min_items_quantity ) &&
         ( a.max_items_quantity == b.max_items_quantity )
@@ -390,10 +458,10 @@ bool Game::states_equals( State_game a, State_game b ){
 State_game Game::max_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
     //int total_max_items_quantity = 0;
-    for( int i = 0; i < previous_moves.size(); i++ ){
+    /*for( int i = 0; i < previous_moves.size(); i++ ){
         state.min_items_quantity += previous_moves[i].min_items_quantity;
         state.max_items_quantity += previous_moves[i].max_items_quantity;
-    };
+    };*/
     //std::cout << "MAX" << std::endl;
     //std::cout << state.depth << std::endl;
     int current_position[2];
@@ -409,6 +477,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     if( game_ended( state ) ){
         return state;
     }else if( state.depth == 8 ){
+        //std::cout << "PT " << state.max_items_quantity << std::endl;
         return state;
     }else{
         State_game best_move;
@@ -436,6 +505,9 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
             };
         };
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
+            if( index_move == 0 ){
+                best_move = moves[ index_move ];
+            };
             if( !moves[ index_move ].invalid_move ){
                 bool no_exist = true;
                 for( int x = 0; x < previous_moves.size(); x++ ){
@@ -446,9 +518,10 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
                 };
                 if( no_exist ){
                     State_game min_game_state = min_move( moves[ index_move ], previous_moves );
-                    //std::cout << "Prof max: " << min_game_state.depth << std::endl;
-                    if( moves[ index_move ].max_items_quantity >= min_game_state.max_items_quantity ){
-                        best_move = moves[ index_move ];              
+                    if( moves[ index_move ].max_items_quantity <= min_game_state.max_items_quantity ){
+                        if( best_move.max_items_quantity <= moves[ index_move ].max_items_quantity ){
+                            best_move = moves[ index_move ];
+                        };           
                     };
                 };                
             };
@@ -496,6 +569,9 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
         };
     };
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
+        if( index_move == 0 ){
+            best_move = moves[ index_move ];
+        };
         if( !moves[ index_move ].invalid_move ){
             bool no_exist = true;
             for( int x = 0; x < previous_moves.size(); x++ ){
@@ -505,10 +581,15 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
                 };
             };
             if( no_exist ){
-                State_game min_game_state = max_move( moves[ index_move ], previous_moves );
-                //std::cout << "Prof min: " << min_game_state.depth << std::endl;
-                if( moves[ index_move ].min_items_quantity >= min_game_state.min_items_quantity ){
+                State_game max_game_state = max_move( moves[ index_move ], previous_moves );
+                //std::cout << "Prof min: " << max_game_state.depth << std::endl;
+                /*if( moves[ index_move ].min_items_quantity >= max_game_state.min_items_quantity ){
                     best_move = moves[ index_move ];
+                };*/
+                if( moves[ index_move ].min_items_quantity <= max_game_state.min_items_quantity ){
+                    if( best_move.min_items_quantity <= moves[ index_move ].min_items_quantity ){
+                        best_move = moves[ index_move ];
+                    };           
                 };
             };
         };
