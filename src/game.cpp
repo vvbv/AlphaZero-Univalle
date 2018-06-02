@@ -7,8 +7,113 @@ void Game::set_board( Board board ){
     this->items_collected_by_human = 0;
     this->items_collected_by_pc = 0;
 };
+
 Board Game::get_board(){
     return this->board;
+};
+
+void Game::start_new_game( Board board, int max_depth  ){
+    this->board = board;
+    this->max_depth = max_depth;
+    this->start_new_game();
+};
+
+void Game::start_new_game(){
+    this->max_depth = 5;
+    State_game new_game;
+    new_game.min_items_quantity = 0;
+    new_game.max_items_quantity = 0;
+    new_game.depth = 0;
+    new_game.board = this->board;
+    new_game.invalid_move = false;
+    std::vector < State_game > previous_moves;
+    for( int i = 0; i <  this->board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j <  this->board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            std::cout << this->board.get_box_value( i_j_tmp ) << " ";
+        };
+        std::cout << std::endl;
+    };
+    std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
+    State_game best_mov = max_move( new_game, previous_moves );
+    previous_moves = {};
+    //std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
+    for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+        };
+        std::cout << std::endl;
+    };
+    while( true ){
+        best_mov.depth = 0;
+        int current_position[2];
+        for( int i = 0; i < best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j < best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int tmp_pos[2] = { i, j }; 
+                if( best_mov.board.get_box_value( tmp_pos ) == best_mov.board.get_horse_human_id() ){
+                    current_position[0] = i;
+                    current_position[1] = j;
+                };
+            };
+        };
+        int option;
+        std::string option_string;
+        std::cin >> option_string;
+        option = std::stoi( option_string );
+        switch ( option )  
+        {  
+            case 0:   
+                new_game = get_pos_up_right( best_mov, current_position, false );
+                break;
+            case 1:   
+                new_game = get_pos_up_left( best_mov, current_position, false );
+                break;
+            case 2:   
+                new_game = get_pos_left_up( best_mov, current_position, false );
+                break;
+            case 3:
+                new_game = get_pos_left_down( best_mov, current_position, false );   
+                break;
+            case 4:
+                new_game = get_pos_down_left( best_mov, current_position, false );   
+                break;
+            case 5:
+                new_game = get_pos_down_right( best_mov, current_position, false );   
+                break;
+            case 6:
+                new_game = get_pos_right_down( best_mov, current_position, false );   
+                break;
+            case 7:
+                new_game = get_pos_right_up( best_mov, current_position, false );   
+                break;
+            default:  
+                new_game = get_pos_up_right( best_mov, current_position, false );
+                std::cout << "Error, default 0" << std::endl; 
+        };
+
+        std::cout << std::endl << "Movimiento [ USER ]" << std::endl;
+        for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int i_j_tmp[2] = {i, j}; 
+                std::cout << new_game.board.get_box_value( i_j_tmp ) << " ";
+            };
+            std::cout << std::endl;
+        };
+
+        std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
+        best_mov = max_move( new_game, previous_moves );
+        previous_moves = {};
+        std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
+        for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
+            for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
+                int i_j_tmp[2] = {i, j}; 
+                std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
+            };
+            std::cout << std::endl;
+        };
+        break;
+    };
 };
 
 State_game Game::get_pos_up_right( State_game state, int current_pos[2], bool is_max ){
@@ -319,109 +424,6 @@ void Game::set_items_to_collect( int items_quantity ){
     this->items_to_collect = items_quantity;
 };
 
-void Game::start_new_game( Board board ){
-    this->board = board;
-    this->start_new_game();
-};
-
-void Game::start_new_game(){
-
-    State_game new_game;
-    new_game.min_items_quantity = 0;
-    new_game.max_items_quantity = 0;
-    new_game.depth = 0;
-    new_game.board = this->board;
-    new_game.invalid_move = false;
-    std::vector < State_game > previous_moves;
-    for( int i = 0; i <  this->board.get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j <  this->board.get_BOARD_SIDE_SIZE(); j++ ){
-            int i_j_tmp[2] = {i, j}; 
-            std::cout << this->board.get_box_value( i_j_tmp ) << " ";
-        };
-        std::cout << std::endl;
-    };
-    std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
-    State_game best_mov = max_move( new_game, previous_moves );
-    previous_moves.clear();
-    //std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
-    for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
-            int i_j_tmp[2] = {i, j}; 
-            std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
-        };
-        std::cout << std::endl;
-    };
-    while( true ){
-        
-        best_mov.depth = 0;
-        int current_position[2];
-        for( int i = 0; i < best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
-            for( int j = 0; j < best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
-                int tmp_pos[2] = { i, j }; 
-                if( best_mov.board.get_box_value( tmp_pos ) == best_mov.board.get_horse_human_id() ){
-                    current_position[0] = i;
-                    current_position[1] = j;
-                };
-            };
-        };
-        int option;
-        std::string option_string;
-        std::cin >> option_string;
-        option = std::stoi( option_string );
-        switch ( option )  
-        {  
-            case 0:   
-                new_game = get_pos_up_right( best_mov, current_position, false );
-                break;
-            case 1:   
-                new_game = get_pos_up_left( best_mov, current_position, false );
-                break;
-            case 2:   
-                new_game = get_pos_left_up( best_mov, current_position, false );
-                break;
-            case 3:
-                new_game = get_pos_left_down( best_mov, current_position, false );   
-                break;
-            case 4:
-                new_game = get_pos_down_left( best_mov, current_position, false );   
-                break;
-            case 5:
-                new_game = get_pos_down_right( best_mov, current_position, false );   
-                break;
-            case 6:
-                new_game = get_pos_right_down( best_mov, current_position, false );   
-                break;
-            case 7:
-                new_game = get_pos_right_up( best_mov, current_position, false );   
-                break;
-            default:  
-                new_game = get_pos_up_right( best_mov, current_position, false );
-                std::cout << "Error, default 0" << std::endl; 
-        };
-
-        std::cout << std::endl << "Movimiento [ USER ]" << std::endl;
-        for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
-            for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
-                int i_j_tmp[2] = {i, j}; 
-                std::cout << new_game.board.get_box_value( i_j_tmp ) << " ";
-            };
-            std::cout << std::endl;
-        };
-
-        std::cout << std::endl << "Movimiento [ PC ]" << std::endl;
-        best_mov = max_move( new_game, previous_moves );
-        previous_moves.clear();
-        std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
-        for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
-            for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
-                int i_j_tmp[2] = {i, j}; 
-                std::cout << best_mov.board.get_box_value( i_j_tmp ) << " ";
-            };
-            std::cout << std::endl;
-        };
-    };
-};
-
 bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_elements *b ){
     if(
         ( a->pos_max_row == b->pos_max_row ) &&
@@ -457,13 +459,6 @@ bool Game::states_equals( State_game a, State_game b ){
 
 State_game Game::max_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
-    //int total_max_items_quantity = 0;
-    /*for( int i = 0; i < previous_moves.size(); i++ ){
-        state.min_items_quantity += previous_moves[i].min_items_quantity;
-        state.max_items_quantity += previous_moves[i].max_items_quantity;
-    };*/
-    //std::cout << "MAX" << std::endl;
-    //std::cout << state.depth << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -476,7 +471,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
     };
     if( game_ended( state ) ){
         return state;
-    }else if( state.depth == 8 ){
+    }else if( state.depth == this->max_depth ){
         //std::cout << "PT " << state.max_items_quantity << std::endl;
         return state;
     }else{
