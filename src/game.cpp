@@ -40,7 +40,7 @@ void Game::start_new_game(){
     std::vector < State_game > previous_moves;
     State_game best_mov = max_move( new_game, previous_moves );
     previous_moves = {};
-    std::cout << std::endl << "!# >> Movimiento [ PC(2) ]\n" << std::endl;
+    std::cout << std::endl << "!# >> Movimiento [ PC(2) ]  Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << " \n" << std::endl;
     for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
@@ -51,7 +51,7 @@ void Game::start_new_game(){
     bool the_came_continues = true;
     if( game_ended( best_mov ) ){
         std::cout << "\n#! >> Juego terminado" << std::endl;
-        std::cout << "#! >> Puntuación: PC[ " << best_mov.max_items_quantity << " ] Jugador Anonimo[ " << best_mov.min_items_quantity << " ]"<< std::endl;
+        std::cout << "#! >> Marcador final! >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << " \n" << std::endl;
         the_came_continues = false;
     };
     while( the_came_continues ){
@@ -102,7 +102,7 @@ void Game::start_new_game(){
                 std::cout << "#! >> Error, default 0" << std::endl; 
         };
 
-        std::cout << std::endl << "#! >> Movimiento [ USUARIO(1) ]\n" << std::endl;
+        std::cout << std::endl << "#! >> Movimiento [ USUARIO(1) ] Marcador >> Usuario >> " << new_game.min_items_quantity << " >> PC >> " << new_game.max_items_quantity << " \n" << std::endl;
         for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
             for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
                 int i_j_tmp[2] = {i, j}; 
@@ -111,8 +111,8 @@ void Game::start_new_game(){
             std::cout << std::endl;
         };
 
-        std::cout << std::endl << "#! >> Movimiento [ PC(2) ]\n" << std::endl;
         best_mov = max_move( new_game, previous_moves );
+        std::cout << std::endl << "#! >> Movimiento [ PC(2) ] Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << " \n" << std::endl;
         previous_moves = {};
         std::cout << "UF: " << best_mov.max_items_quantity << std::endl;
         for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
@@ -125,7 +125,7 @@ void Game::start_new_game(){
 
         if( game_ended( best_mov ) ){
             std::cout << "\n#! >> Juego terminado" << std::endl;
-            std::cout << "#! >> Puntuación: PC[ " << best_mov.max_items_quantity << " ] Jugador Anonimo[ " << best_mov.min_items_quantity << " ]"<< std::endl;
+            std::cout << "#! >> Marcador final! >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << " \n" << std::endl;
             break;
         };
     };
@@ -453,16 +453,28 @@ bool Game::compare_minmax_game_elements( minmax_game_elements *a, minmax_game_el
     return false;
 };
 
-bool Game::states_equals( State_game a, State_game b ){
+bool Game::states_equals( State_game a, State_game b, bool is_max ){
 
     for( int i = 0; i < a.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < a.board.get_BOARD_SIDE_SIZE(); j++ ){
-            int i_j_tmp[2] = {i, j}; 
-            if( a.board.get_box_value( i_j_tmp ) != b.board.get_box_value( i_j_tmp ) ){
-                return false;
+            int tmp_pos[2] = { i, j }; 
+            if( is_max ){
+                if( a.board.get_box_value( tmp_pos ) == a.board.get_horse_pc_id() ){
+                    if( b.board.get_box_value( tmp_pos ) != a.board.get_horse_pc_id() ){
+                        return false;
+                    };
+                };
+            }else{
+                if( a.board.get_box_value( tmp_pos ) == a.board.get_horse_human_id() ){
+                    if( b.board.get_box_value( tmp_pos ) != a.board.get_horse_human_id() ){
+                        return false;
+                    };
+                };
             };
+            
         };
     };
+
     if(
         ( a.min_items_quantity == b.min_items_quantity ) &&
         ( a.max_items_quantity == b.max_items_quantity )
@@ -518,6 +530,9 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
         if( min_one_valid_move ){
             previous_moves.push_back( state );
         };
+        if(moves.size() == 0){
+            std::cout << "Mov inválidos" << std::endl;
+        };
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( index_move == 0 ){
                 best_move = moves[ index_move ];
@@ -525,7 +540,7 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
             if( !moves[ index_move ].invalid_move ){
                 bool no_exist = true;
                 for( int x = 0; x < previous_moves.size(); x++ ){
-                    if( states_equals( previous_moves[x], moves[ index_move ] ) ){
+                    if( states_equals( previous_moves[x], moves[ index_move ], true ) ){
                         no_exist = false;
                         break;
                     };
@@ -592,7 +607,7 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
         if( !moves[ index_move ].invalid_move ){
             bool no_exist = true;
             for( int x = 0; x < previous_moves.size(); x++ ){
-                if( states_equals( previous_moves[x], moves[ index_move ] ) ){
+                if( states_equals( previous_moves[x], moves[ index_move ], false ) ){
                     no_exist = false;
                     break;
                 };

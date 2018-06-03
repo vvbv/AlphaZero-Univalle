@@ -43,7 +43,7 @@ class Game{
         State_game get_pos_right_down( State_game state, int current_pos[2], bool is_max );
         State_game get_pos_right_up( State_game state, int current_pos[2], bool is_max );
         bool game_ended( State_game state );
-        bool states_equals( State_game a, State_game b );
+        bool states_equals( State_game a, State_game b, bool is_max );
 
     public:
 
