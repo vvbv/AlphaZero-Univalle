@@ -507,12 +507,16 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
         moves.push_back( get_pos_right_down( state_6, current_position, true ) );
         State_game state_7 = state;
         moves.push_back( get_pos_right_up( state_7, current_position, true ) );
+        // Con esto solo se mira si hay al menos un movimiento válido
+        bool min_one_valid_move = false;
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( !moves[ index_move ].invalid_move ){
-                previous_moves.push_back( state );
+                min_one_valid_move = true;
                 moves.erase( moves.begin() + index_move );
-                break;
             };
+        };
+        if( min_one_valid_move ){
+            previous_moves.push_back( state );
         };
         for( int index_move = 0; index_move < moves.size(); index_move++ ){
             if( index_move == 0 ){
@@ -542,8 +546,6 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
 
 State_game Game::min_move( State_game state, std::vector < State_game > previous_moves_x ){
     std::vector < State_game > previous_moves = previous_moves_x;
-    //std::cout << state.depth << std::endl;
-    //std::cout << "MIN" << std::endl;
     int current_position[2];
     for( int i = 0; i < state.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j < state.board.get_BOARD_SIDE_SIZE(); j++ ){
@@ -572,12 +574,16 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
     moves.push_back( get_pos_right_down( state_6, current_position, false ) );
     State_game state_7 = state;
     moves.push_back( get_pos_right_up( state_7, current_position, false ) );
+    // Con esto solo se mira si hay al menos un movimiento válido
+    bool min_one_valid_move = false;
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
         if( !moves[ index_move ].invalid_move ){
-            previous_moves.push_back( state );
+            min_one_valid_move = true;
             moves.erase( moves.begin() + index_move );
-            break;
         };
+    };
+    if( min_one_valid_move ){
+        previous_moves.push_back( state );
     };
     for( int index_move = 0; index_move < moves.size(); index_move++ ){
         if( index_move == 0 ){
