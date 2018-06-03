@@ -102,6 +102,11 @@ void Game::start_new_game(){
                 std::cout << "#! >> Error, default 0" << std::endl; 
         };
 
+        if( new_game.invalid_move ){
+            std::cout << "#! >> Oops, movimiento invalido, intenta nuevamente" << std::endl;
+            continue;
+        };
+
         std::cout << std::endl << "#! >> Movimiento [ USUARIO(1) ] Marcador >> Usuario >> " << new_game.min_items_quantity << " >> PC >> " << new_game.max_items_quantity << " \n" << std::endl;
         for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
             for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
