@@ -3,6 +3,7 @@
 
 #include "board.hpp"
 #include "state_game.hpp"
+#include <climits>
 #include <tuple>
 
 class Game{

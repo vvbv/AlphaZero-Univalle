@@ -14,6 +14,8 @@ class State_game{
         int depth;
         Board board;
         bool invalid_move;
+        int max_utility;
+        int min_utility;
 
 };
 
