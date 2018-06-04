@@ -19,6 +19,7 @@ void Game::start_new_game( Board board, int max_depth  ){
 };
 
 void Game::start_new_game(){
+    
     bool call_gg_displayed = false;
     std::cout << "#! >> Ingrese la profundiad" << std::endl;
     std::cout << "#! << ";
@@ -30,26 +31,15 @@ void Game::start_new_game(){
     new_game.board = this->board;
     new_game.invalid_move = false;
     std::cout << std::endl << "#! >> Tablero\n" << std::endl;
-    for( int i = 0; i <  this->board.get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j <  this->board.get_BOARD_SIDE_SIZE(); j++ ){
-            int i_j_tmp[2] = {i, j}; 
-            std::cout << " " << this->board.get_box_value( i_j_tmp );
-        };
-        std::cout << std::endl;
-    };
-    
+    print_game( new_game );
+
     std::vector < State_game > previous_moves;
     State_game best_mov = max_move( new_game, previous_moves );
     previous_moves = {};
     std::cout << std::endl << "#! >> Movimiento [ PC(2) ]  Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << std::endl;
     std::cout << "#! >> UF >> " << best_mov.max_items_quantity << "\n" << std::endl;
-    for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
-        for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
-            int i_j_tmp[2] = {i, j}; 
-            std::cout << " " << best_mov.board.get_box_value( i_j_tmp );
-        };
-        std::cout << std::endl;
-    };
+    print_game( best_mov );
+
     bool the_game_continues = true;
     if( game_ended( best_mov ) ){
         std::cout << "\n#! >> Juego terminado" << std::endl;
@@ -120,26 +110,14 @@ void Game::start_new_game(){
         };
 
         std::cout << std::endl << "#! >> Movimiento [ USUARIO(1) ] Marcador >> Usuario >> " << new_game.min_items_quantity << " >> PC >> " << new_game.max_items_quantity << " \n" << std::endl;
-        for( int i = 0; i <  new_game.board.get_BOARD_SIDE_SIZE(); i++ ){
-            for( int j = 0; j <  new_game.board.get_BOARD_SIDE_SIZE(); j++ ){
-                int i_j_tmp[2] = {i, j}; 
-                std::cout << " " << new_game.board.get_box_value( i_j_tmp );
-            };
-            std::cout << std::endl;
-        };
+        print_game( new_game );
 
         new_game.depth = 0;
         best_mov = max_move( new_game, previous_moves );
         previous_moves = {};
         std::cout << std::endl << "#! >> Movimiento [ PC(2) ] Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << std::endl;
         std::cout << "#! >> UF >> " << best_mov.max_utility << "\n" << std::endl;
-        for( int i = 0; i <  best_mov.board.get_BOARD_SIDE_SIZE(); i++ ){
-            for( int j = 0; j <  best_mov.board.get_BOARD_SIDE_SIZE(); j++ ){
-                int i_j_tmp[2] = {i, j}; 
-                std::cout << " " << best_mov.board.get_box_value( i_j_tmp );
-            };
-            std::cout << std::endl;
-        };
+        print_game( best_mov );
 
         if( game_ended( best_mov ) ){
             std::cout << "\n#! >> Juego terminado" << std::endl;
@@ -706,4 +684,14 @@ bool Game::game_ended( State_game state ){
         };
     };
     return true;
+};
+
+void Game::print_game( State_game game ){
+    for( int i = 0; i <  game.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j <  game.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int i_j_tmp[2] = {i, j}; 
+            std::cout << " " << game.board.get_box_value( i_j_tmp );
+        };
+        std::cout << std::endl;
+    };
 };
