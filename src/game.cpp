@@ -19,7 +19,7 @@ void Game::start_new_game( Board board, int max_depth  ){
 };
 
 void Game::start_new_game(){
-    
+
     bool call_gg_displayed = false;
     std::cout << "#! >> Ingrese la profundiad" << std::endl;
     std::cout << "#! << ";
@@ -567,18 +567,18 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
                         if( best_utility <= min_game_state.max_utility ){
                             best_move = moves[ index_move ];
                             best_utility = min_game_state.max_utility;
-                            best_move.max_utility +=  min_game_state.max_utility;
+                            best_move.max_utility =  min_game_state.max_utility;
                         };
                     };
                 };                
             };
         };
-        if( moves[0].depth == 1 ){
-            for(int i =0; i < moves.size(); i++){
-                std::cout << "UF" << i << ": " << moves[i].max_utility << std::endl;
-            };
-            std::cout << "UFBM: " << best_move.max_utility << std::endl;
-        };
+        // if( moves[0].depth == 1 ){
+        //     for(int i =0; i < moves.size(); i++){
+        //         std::cout << "UF" << i << ": " << moves[i].max_utility << std::endl;
+        //     };
+        //     std::cout << "UFBM: " << best_move.max_utility << std::endl;
+        // };
         
         return best_move;
     };
@@ -665,7 +665,7 @@ State_game Game::min_move( State_game state, std::vector < State_game > previous
                     if( best_utility <= max_game_state.min_utility ){
                         best_move = moves[ index_move ];
                         best_utility += max_game_state.min_utility;
-                        best_move.min_utility +=  max_game_state.min_utility;
+                        best_move.min_utility =  max_game_state.min_utility;
                     };
                 };
             };
@@ -690,8 +690,8 @@ void Game::print_game( State_game game ){
     for( int i = 0; i <  game.board.get_BOARD_SIDE_SIZE(); i++ ){
         for( int j = 0; j <  game.board.get_BOARD_SIDE_SIZE(); j++ ){
             int i_j_tmp[2] = {i, j}; 
-            std::cout << " " << game.board.get_box_value( i_j_tmp );
+            std::cout << "  " << game.board.get_box_value( i_j_tmp );
         };
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl;
     };
 };
