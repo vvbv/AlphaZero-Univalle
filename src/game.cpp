@@ -687,11 +687,44 @@ bool Game::game_ended( State_game state ){
 };
 
 void Game::print_game( State_game game ){
+    int field_number = 0;
     for( int i = 0; i <  game.board.get_BOARD_SIDE_SIZE(); i++ ){
+        std::cout << "      ";
         for( int j = 0; j <  game.board.get_BOARD_SIDE_SIZE(); j++ ){
+            std::string bg_color = "";
+            std::string color = "";
+            if( ( field_number %  2 ) == 0 ){
+                bg_color = "107";
+                color = "97";
+            }else{
+                bg_color = "106";
+                color = "36";
+            };
             int i_j_tmp[2] = {i, j}; 
-            std::cout << "  " << game.board.get_box_value( i_j_tmp );
+            int value = game.board.get_box_value( i_j_tmp );
+            if( value == game.board.get_item_id() ){
+                std::cout << "\033[1;103;33m " << value << "\033[0m";
+            }else if( value == game.board.get_horse_human_id() ){
+                std::cout << "\033[1;102;32m " << value << "\033[0m";
+            }else if( value ==game.board.get_horse_pc_id() ){
+                std::cout << "\033[1;101;31m " << value << "\033[0m";
+            }else{
+                std::cout << "\033[1;" + bg_color + ";" + color + "m " << value << "\033[0m";
+            };
+            field_number++;
         };
-        std::cout << std::endl << std::endl;
+        field_number++;
+        switch( i ){
+            case 0:
+                std::cout << "      \033[1;102;32m  \033[0m " << "Usuario";
+                break;
+            case 1:
+                std::cout << "      \033[1;101;31m  \033[0m " << "PC";
+                break;
+            case 2:
+                std::cout << "      \033[1;103;33m  \033[0m " << "Item";
+                break;
+        };
+        std::cout << std::endl ;
     };
 };
