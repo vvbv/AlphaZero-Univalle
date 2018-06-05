@@ -692,12 +692,51 @@ bool Game::game_ended( State_game state ){
 };
 
 void Game::print_game( State_game game ){
+
+    int current_position[2];
+    for( int i = 0; i < game.board.get_BOARD_SIDE_SIZE(); i++ ){
+        for( int j = 0; j < game.board.get_BOARD_SIDE_SIZE(); j++ ){
+            int tmp_pos[2] = { i, j }; 
+            if( game.board.get_box_value( tmp_pos ) == game.board.get_horse_human_id() ){
+                current_position[0] = i;
+                current_position[1] = j;
+            };
+        };
+    };
+
+    std::vector < State_game > moves;
+    State_game aux_game = game;
+    moves.push_back( get_pos_up_right( aux_game, current_position, false ) );
+    moves.push_back( get_pos_up_left( aux_game, current_position, false ) );
+    moves.push_back( get_pos_left_up( aux_game, current_position, false ) );
+    moves.push_back( get_pos_left_down( aux_game, current_position, false ) );
+    moves.push_back( get_pos_down_left( aux_game, current_position, false ) );
+    moves.push_back( get_pos_down_right( aux_game, current_position, false ) );
+    moves.push_back( get_pos_right_down( aux_game, current_position, false ) );
+    moves.push_back( get_pos_right_up( aux_game, current_position, false ) );
+
+    std::vector < std::tuple< int, int, int > > pos_min;
+    for( int x = 0; x < moves.size(); x++ ){
+        if( !moves[x].invalid_move ){
+            for( int i = 0; i < moves[x].board.get_BOARD_SIDE_SIZE(); i++ ){
+                for( int j = 0; j < moves[x].board.get_BOARD_SIDE_SIZE(); j++ ){
+                    int tmp_pos[2] = { i, j }; 
+                    if( moves[x].board.get_box_value( tmp_pos ) == moves[x].board.get_horse_human_id() ){
+                        std::tuple < int, int, int > tmp = std::make_tuple( i, j, x );
+                        pos_min.push_back( tmp );
+                    };
+                };
+            };
+        };
+    };
+
     int field_number = 0;
     for( int i = 0; i <  game.board.get_BOARD_SIDE_SIZE(); i++ ){
         std::cout << "      ";
         for( int j = 0; j <  game.board.get_BOARD_SIDE_SIZE(); j++ ){
             std::string bg_color = "";
             std::string color = "";
+            bool flag_black = false;
             if( ( field_number %  2 ) == 0 ){
                 bg_color = "107";
                 color = "97";
@@ -707,14 +746,29 @@ void Game::print_game( State_game game ){
             };
             int i_j_tmp[2] = {i, j}; 
             int value = game.board.get_box_value( i_j_tmp );
+            int value_aux = 0;
+            for( int x = 0; x < pos_min.size(); x++ ){
+                if( (std::get<0>(pos_min[x]) == i)&&(std::get<1>(pos_min[x]) == j) ){
+                    value_aux = std::get<2>(pos_min[x]);
+                    flag_black = true;
+                };
+            };
             if( value == game.board.get_item_id() ){
-                std::cout << "\033[1;103;33m " << value << "\033[0m";
+                if( flag_black ){
+                    std::cout << "\033[1;103;30m " << value_aux << "\033[0m";
+                }else{
+                    std::cout << "\033[1;103;33m " << value << "\033[0m";
+                };
             }else if( value == game.board.get_horse_human_id() ){
-                std::cout << "\033[1;102;32m " << value << "\033[0m";
+                std::cout << "\033[1;102;32m " << value_aux << "\033[0m";
             }else if( value ==game.board.get_horse_pc_id() ){
                 std::cout << "\033[1;101;31m " << value << "\033[0m";
             }else{
-                std::cout << "\033[1;" + bg_color + ";" + color + "m " << value << "\033[0m";
+                if( flag_black ){
+                    std::cout << "\033[1;" + bg_color + ";30m " << value_aux << "\033[0m";
+                }else{
+                    std::cout << "\033[1;" + bg_color + ";" + color + "m " << value << "\033[0m";
+                };
             };
             field_number++;
         };
