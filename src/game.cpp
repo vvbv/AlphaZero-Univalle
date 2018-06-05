@@ -34,8 +34,11 @@ void Game::start_new_game(){
     print_game( new_game );
 
     std::vector < State_game > previous_moves;
+    std::vector < State_game > global_previous_moves;
+
     State_game best_mov = max_move( new_game, previous_moves );
     previous_moves = {};
+    global_previous_moves.push_back( best_mov );
     std::cout << std::endl << "#! >> Movimiento [ PC(2) ]  Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity  << "\n" << std::endl;
     //std::cout << "#! >> UF >> " << best_mov.max_items_quantity << "\n" << std::endl;
     print_game( best_mov );
@@ -113,8 +116,10 @@ void Game::start_new_game(){
         print_game( new_game );
 
         new_game.depth = 0;
+        previous_moves = global_previous_moves;
         best_mov = max_move( new_game, previous_moves );
         previous_moves = {};
+        global_previous_moves.push_back( best_mov );
         std::cout << std::endl << "#! >> Movimiento [ PC(2) ] Marcador >> Usuario >> " << best_mov.min_items_quantity << " >> PC >> " << best_mov.max_items_quantity << "\n" << std::endl;
         //std::cout << "#! >> UF >> " << best_mov.max_utility << "\n" << std::endl;
         print_game( best_mov );
