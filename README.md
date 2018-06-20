@@ -1,4 +1,4 @@
-# AlphaZero-Univalle
+# AlphaZero-Univalle [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fcb01fa9858544ec8a2196f5682d772f)](https://www.codacy.com/app/vvbv/AlphaZero-Univalle?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vvbv/AlphaZero-Univalle&amp;utm_campaign=Badge_Grade)
 Segundo proyecto de IA, implementación del algoritmo MINMAX.
 
 ## Compilación
