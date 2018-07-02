@@ -488,17 +488,16 @@ State_game Game::max_move( State_game state, std::vector < State_game > previous
             };
         };
     };
-    if( game_ended( state ) || ( state.depth >= this->max_depth ) ){
+    if( game_ended( state ) ){
         if( state.max_items_quantity > state.min_items_quantity ){
             state.min_utility = 0;
             state.max_utility =  INT_MAX;
         }else if( state.max_items_quantity < state.min_items_quantity ){
             state.min_utility = INT_MAX;
             state.max_utility =  0;
-        }else{
-            state.max_utility =  0;
-            state.min_utility =  0;
         };
+        return state;
+    }else if( state.depth >= this->max_depth ){
         return state;
     }else{
         State_game best_move;
